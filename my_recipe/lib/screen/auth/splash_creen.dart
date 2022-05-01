@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
-import 'package:my_recipe/screen/auth/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      var dataLogin = Provider.of<DataLogin>(context, listen: false);
+      var dataLogin = Provider.of<AuthViewModel>(context, listen: false);
       await dataLogin.checkLogin(context);
     });
   }
@@ -31,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Colors.orangeAccent,
       body: Center(
         child: SizedBox(
             width: 200,

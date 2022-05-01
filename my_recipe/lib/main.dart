@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => DataLogin()),
+    ChangeNotifierProvider(create: (_) => AuthViewModel()),
   ],child: const MyApp()));
 }
 

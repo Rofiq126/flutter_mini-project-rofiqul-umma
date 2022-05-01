@@ -38,24 +38,24 @@ class _BottomNavBarState extends State<BottomNavBar> {
               textAlign: TextAlign.center,
               activeColor: Colors.grey,
               icon: const Icon(
-                Icons.home,
-                color: Colors.red,
+                Icons.home_rounded,
+                color: Colors.orange,
               ),
               title: const Text('Home')),
           BottomNavyBarItem(
               textAlign: TextAlign.center,
               activeColor: Colors.grey,
               icon: const Icon(
-                Icons.favorite,
-                color: Colors.red,
+                Icons.favorite_rounded,
+                color: Colors.orangeAccent,
               ),
               title: const Text('Favorites')),
           BottomNavyBarItem(
               textAlign: TextAlign.center,
               activeColor: Colors.grey,
               icon: const Icon(
-                Icons.person,
-                color: Colors.red,
+                Icons.account_circle,
+                color: Colors.orangeAccent,
               ),
               title: const Text('Profile')),
         ]);

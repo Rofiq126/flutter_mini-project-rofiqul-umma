@@ -141,6 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget textFormFieldPassword() {
     return TextFormField(
       controller: passwordController,
+      obscureText: true,
+      enableSuggestions: false,
+      autocorrect: false,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.password_rounded),
         labelText: 'Password',
@@ -162,12 +165,13 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               if (!formKey.currentState!.validate()) return;
               formKey.currentState!.save();
-              final loginProvider = Provider.of<DataLogin>(context, listen: false);
-              loginProvider.addUser(UserLogin(
-                  userName: usernameController.text,
-                  email: emailController.text,
-                  password: passwordController.text,
-                  ));
+              final loginProvider =
+                  Provider.of<AuthViewModel>(context, listen: false);
+              loginProvider.addUser(UserData(
+                userName: usernameController.text,
+                email: emailController.text,
+                password: passwordController.text,
+              ));
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const BottomNavBar()),
@@ -177,6 +181,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20))),
                 backgroundColor: MaterialStateProperty.all(Colors.red)),
-            child: const Text('Login')));
+            child: const Text('Log in')));
   }
 }

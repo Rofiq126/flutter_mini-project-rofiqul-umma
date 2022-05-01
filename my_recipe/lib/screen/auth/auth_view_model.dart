@@ -6,12 +6,18 @@ import 'package:my_recipe/screen/auth/model/auth_model.dart';
 import 'package:my_recipe/screen/my_recipe/bottom_navBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DataLogin extends ChangeNotifier {
-  void addUser(UserLogin userLogin) async {
+class AuthViewModel extends ChangeNotifier {
+  String userName = '';
+  String email = '';
+  String password = '';
+  String profilePicture = '';
+  String bannerPicture = '';
+
+  void addUser(UserData userLogin) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('userName', userLogin.userName);
-    prefs.setString('email', userLogin.email);
-    prefs.setString('password', userLogin.password);
+    prefs.setString('userName', userLogin.userName!);
+    prefs.setString('email', userLogin.email!);
+    prefs.setString('password', userLogin.password!);
     notifyListeners();
   }
 
@@ -21,6 +27,7 @@ class DataLogin extends ChangeNotifier {
     prefs.remove('email');
     prefs.remove('password');
     prefs.remove('profilePict');
+    prefs.remove('banerPict');
     notifyListeners();
   }
 
@@ -41,17 +48,41 @@ class DataLogin extends ChangeNotifier {
     notifyListeners();
   }
 
-  void pickImage() async {
+  Future<void> pickImageProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? _nameFile;
+    String? _profilePict;
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       final file = result.files.first;
-      _nameFile = file.path;
-      prefs.setString('profilePict', _nameFile ?? '');
+      _profilePict = file.path;
+      prefs.setString('profilePict', _profilePict ?? '');
     } else {
       return;
     }
+    notifyListeners();
+  }
+
+  Future<void> pickImageBaner() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? _banerPict;
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      final file = result.files.first;
+      _banerPict = file.path;
+      prefs.setString('banerPict', _banerPict ?? '');
+    } else {
+      return;
+    }
+    notifyListeners();
+  }
+
+  getDataUser() async {
+    var prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString('userName').toString();
+    email = prefs.getString('email').toString();
+    password = prefs.getString('password').toString();
+    profilePicture = prefs.getString('profilePict') ?? '';
+    bannerPicture = prefs.getString('banerPict') ?? '';
     notifyListeners();
   }
 }

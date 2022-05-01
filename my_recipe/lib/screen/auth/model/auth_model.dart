@@ -1,12 +1,12 @@
-class UserLogin {
-  String userName = '';
-  String email = '';
-  String password = '';
-  String? profilePicture = '';
-  UserLogin({
-    required this.userName,
-    required this.email,
-    required this.password,
+class UserData {
+  String? userName;
+  String? email;
+  String? password;
+  String? profilePicture;
+  UserData({
+    this.userName,
+    this.email,
+    this.password,
     this.profilePicture,
   });
 
@@ -20,7 +20,7 @@ class UserLogin {
     return map;
   }
 
-  UserLogin.fromMap(Map<String, dynamic> map) {
+  UserData.fromMap(Map<String, dynamic> map) {
     userName = map['userName'];
     email = map['email'];
     password = map['password'];
