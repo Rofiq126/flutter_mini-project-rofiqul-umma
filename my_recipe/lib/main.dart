@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/splash_creen.dart';
+import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {

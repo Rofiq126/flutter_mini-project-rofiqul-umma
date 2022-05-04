@@ -31,7 +31,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  checkLogin(BuildContext context) async {
+  Future<void> checkLogin(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('userName') != null &&
         prefs.getString('email') != null) {
@@ -62,7 +62,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> pickImageBaner() async {
+  Future<void> pickImageBanner() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? _banerPict;
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -76,7 +76,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  getDataUser() async {
+  Future<void> getDataUser() async {
     var prefs = await SharedPreferences.getInstance();
     userName = prefs.getString('userName').toString();
     email = prefs.getString('email').toString();

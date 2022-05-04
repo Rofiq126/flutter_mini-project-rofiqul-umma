@@ -153,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             right: 7,
             child: InkWell(
               onTap: () {
-                loginProvider.pickImageBaner().then((_) => getDataUser());
+                loginProvider.pickImageBanner().then((_) => getDataUser());
               },
               child: Container(
                 width: 40,

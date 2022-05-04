@@ -165,9 +165,9 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               if (!formKey.currentState!.validate()) return;
               formKey.currentState!.save();
-              final loginProvider =
+              final authProvider =
                   Provider.of<AuthViewModel>(context, listen: false);
-              loginProvider.addUser(UserData(
+              authProvider.addUser(UserData(
                 userName: usernameController.text,
                 email: emailController.text,
                 password: passwordController.text,
