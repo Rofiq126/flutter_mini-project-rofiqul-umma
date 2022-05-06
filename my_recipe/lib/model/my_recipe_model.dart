@@ -17,9 +17,9 @@ class Recipe {
       rating: json["rating"] as double?,
     );
   }
-  static Future<List<Recipe>> recipesFromSnapshot(List snapShot) async {
-    return snapShot.map((e) => Recipe.fromJson(e!)).toList();
-  }
+  // static Future<List<Recipe>> recipesFromSnapshot(List snapShot) async {
+  //   return snapShot.map((e) => Recipe.fromJson(e)).toList();
+  // }
 
   @override
   String toString() {

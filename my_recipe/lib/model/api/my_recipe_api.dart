@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:my_recipe/model/api/my_recipe_model_2.dart';
 import 'package:my_recipe/model/my_recipe_model.dart';
 
 class RecipeAPI {
-  static Future<List<Recipe>> getRecipe() async {
+  static Future<List<Feed>> getRecipe() async {
     var uri = Uri.https(
         "yummly2.p.rapidapi.com", "/feeds/list", {"limit": "18", "start": "0"});
 
@@ -18,16 +20,36 @@ class RecipeAPI {
           "access-control-allow-origin": "*",
           "connection": "keep-alive",
           "content-type": "application/json",
+          "date": "Fri, 06 May 2022 10:03:16 GMT",
+          "server": "RapidAPI-1.2.8",
+          "transfer-encoding": "chunked",
+          "x-rapidapi-region": "AWS - ap-southeast-1",
+          "x-rapidapi-version": "1.2.8",
+          "x-ratelimit-requests-limit": "500",
+          "x-ratelimit-requests-remaining": "206",
+          "x-ratelimit-requests-reset": "1620992"
         }));
 
     var jsonString = jsonEncode(response.data);
     Map data = jsonDecode(jsonString);
+    debugPrint(response.statusCode.toString());
     List _temp = [];
-    if (data.isNotEmpty) {
-      for (var i in data['feed']) {
-        _temp.add(i['content']['details']);
-      }
+    if (response.statusCode == 200 ||
+        response.statusCode == 201 ||
+        response.statusCode == 202 ||
+        response.statusCode == 203) {
+      ListRecipeModel listRecipeModel =
+          ListRecipeModel.fromJson(json.decode(response.data));
+      List<Feed> listFeed = listRecipeModel.feed;
+      return listFeed;
     }
-    return Recipe.recipesFromSnapshot(_temp);
+
+    // if (data.isNotEmpty) {
+    //   for (var i in data['feed']) {
+    //     _temp.add(i['content']['details']);
+    //   }
+    // }
+    // return Recipe.recipesFromSnapshot(_temp);
+    return [];
   }
 }

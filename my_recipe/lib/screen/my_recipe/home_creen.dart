@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:my_recipe/model/api/my_recipe_model_2.dart';
 import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_recipe/model/api/my_recipe_api.dart';
-import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double? foodRating;
   AuthViewModel? authProvider;
 
-  late List<Recipe> recipe = [Recipe(name: '', image: '', rating: 0.0)];
+  late List<Feed> recipe = [];
   bool isLoading = true;
 
   Future<void> initDataUser() async {
@@ -94,10 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final recipes = myRecipeViewModel.recipes[index];
                           return CardRecipe(
-                              foodName: recipes.name ?? '',
+                              foodName: recipes.content.details.name,
                               foodImage:
                                   'https://i.pinimg.com/originals/f9/f1/e7/f9f1e722c01eb83182adb117026cd1a5.jpg',
-                              foodRating: recipes.rating ?? 0.0);
+                              foodRating:
+                                  recipes.content.details.rating.toDouble());
                         }),
                   )
                 ],
@@ -154,10 +155,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class CardRecipe extends StatelessWidget {
-  String? foodName;
-  String? foodImage;
-  double? foodRating;
-  CardRecipe({
+  final String? foodName;
+  final String? foodImage;
+  final double? foodRating;
+  const CardRecipe({
     Key? key,
     required this.foodName,
     required this.foodImage,
