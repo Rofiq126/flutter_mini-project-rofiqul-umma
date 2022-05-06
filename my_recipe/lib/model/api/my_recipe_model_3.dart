@@ -500,16 +500,16 @@ class FeedDisplay {
 
   String displayName;
   List<String> images;
-  String flag;
+  String? flag;
   // Source source;
   // List<Profile> profiles;
   // bool displayPrepStepsInline;
   // List<dynamic> collections;
-  String title;
+  String? title = '';
   // dynamic description;
   // dynamic callToActionText;
   // String cardType;
-  String textLocation;
+  String? textLocation ;
 
   factory FeedDisplay.fromJson(Map<String, dynamic> json) => FeedDisplay(
     displayName: json["displayName"] == null ? null : json["displayName"],

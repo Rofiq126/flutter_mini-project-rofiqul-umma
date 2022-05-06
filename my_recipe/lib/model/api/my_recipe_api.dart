@@ -7,9 +7,9 @@ import 'package:my_recipe/model/result_model_recipe.dart';
 import '../../commons/constant.dart';
 
 class RecipeAPI {
-  static Future<List<Result>> getRecipe(String limitNumber) async {
-    var uri = Uri.https(Constant.kRootUrl, Constant.kSearchUrl,
-        {"limit": limitNumber, "apiKey": Constant.kApiKeyParams});
+  static Future<List<Feed>> getRecipe() async {
+    var uri = Uri.https(
+        "yummly2.p.rapidapi.com", "/feeds/list", {"limit": "2", "start": "0"});
 
     final response = await Dio().getUri(uri,
         options: Options(headers: {
@@ -28,8 +28,9 @@ class RecipeAPI {
         response.statusCode == 201 ||
         response.statusCode == 202 ||
         response.statusCode == 203) {
-      debugPrint('Success Fetching Data');
-      return ResultModelRecipe.fromJson(json.decode(data)).results;
+      ListsModelRecipe listRecipeModel = ListsModelRecipe.fromJson(data);
+      List<Feed> listFeed = listRecipeModel.feed;
+      return listFeed;
     }
 
     debugPrint('Error Fetching data!');
