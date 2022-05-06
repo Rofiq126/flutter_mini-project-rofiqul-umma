@@ -18,6 +18,7 @@ List<Picture> listPicture = [
       resizableImageHeight: 100,
       resizableImageWidth: 100)
 ];
+Details menuDetails = Details(totalTime: "10 Minutes", displayName: "Menu", name: "Menu Name", brand: "brand", id: "123", recipeId: "123", numberOfServings: 1, globalId: "globalId", totalTimeInSeconds: 60, rating: 4.5);
 
 class ListRecipeModel {
   ListRecipeModel({
@@ -70,7 +71,7 @@ class Content {
 
   dynamic description;
   dynamic preparationSteps;
-  Details details;
+  Details? details;
   // MoreContent relatedContent;
   // List<IngredientLine> ingredientLines;
   String? unitSystem;
@@ -92,7 +93,7 @@ class Content {
   Map<String, dynamic> toJson() => {
         "description": description,
         "preparationSteps": preparationSteps,
-        "details": details.toJson(),
+        "details": details!.toJson(),
         // "relatedContent": relatedContent.toJson(),
         // "ingredientLines":
         //     List<dynamic>.from(ingredientLines.map((x) => x.toJson())),
@@ -143,9 +144,9 @@ class Details {
         brand: json["brand"] ?? "Menu Brand",
         id: json["id"] ?? "Recipe ID",
         // attribution: Attribution.fromJson(json["attribution"]),
-        recipeId: json["recipeId"],
+        recipeId: json["recipeId"] ?? "123",
         numberOfServings: json["numberOfServings"] ?? 1,
-        globalId: json["globalId"],
+        globalId: json["globalId"] ?? "123",
         totalTimeInSeconds: json["totalTimeInSeconds"] ?? 60,
         rating: json["rating"] ?? 4.0,
       );
