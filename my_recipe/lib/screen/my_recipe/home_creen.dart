@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:my_recipe/model/api/my_recipe_model_3.dart';
+import 'package:my_recipe/model/result_model_recipe.dart';
 import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double? foodRating;
   AuthViewModel? authProvider;
 
-  late List<Feed> recipe = [];
+  late List<Result> recipe = [];
   bool isLoading = true;
 
   Future<void> initDataUser() async {
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getRecipes() async {
-    recipe = await RecipeAPI.getRecipe();
+    recipe = await RecipeAPI.getRecipe("10");
     setState(() {
       isLoading = false;
     });
@@ -95,12 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: myRecipeViewModel.recipes.length,
                         itemBuilder: (context, index) {
                           final recipes = myRecipeViewModel.recipes[index];
+                          debugPrint(
+                              myRecipeViewModel.recipes.length.toString());
                           return CardRecipe(
-                              foodName: recipes.display.displayName,
-                              foodImage:
-                                  recipes.display.images[0],
-                              foodRating:
-                                  4.5);
+                            foodName: recipes.title,
+                            foodImage: recipes.image,
+                            foodRating: 4.5,
+                          );
                         }),
                   )
                 ],
@@ -160,6 +161,7 @@ class CardRecipe extends StatelessWidget {
   final String? foodName;
   final String? foodImage;
   final double? foodRating;
+
   const CardRecipe({
     Key? key,
     required this.foodName,
