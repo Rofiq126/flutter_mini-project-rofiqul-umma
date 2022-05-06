@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:my_recipe/model/api/my_recipe_model_2.dart';
+import 'package:my_recipe/model/api/my_recipe_model_3.dart';
 import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final recipes = myRecipeViewModel.recipes[index];
                           return CardRecipe(
-                              foodName: recipes.content.details.name,
+                              foodName: recipes.display.displayName,
                               foodImage:
-                                  'https://i.pinimg.com/originals/f9/f1/e7/f9f1e722c01eb83182adb117026cd1a5.jpg',
+                                  recipes.display.images[0],
                               foodRating:
-                                  recipes.content.details.rating);
+                                  4.5);
                         }),
                   )
                 ],

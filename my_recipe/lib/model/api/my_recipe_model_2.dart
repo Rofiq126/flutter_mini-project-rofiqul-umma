@@ -18,7 +18,7 @@ List<Picture> listPicture = [
       resizableImageHeight: 100,
       resizableImageWidth: 100)
 ];
-Details menuDetails = Details(totalTime: "10 Minutes", displayName: "Menu", name: "Menu Name", brand: "brand", id: "123", recipeId: "123", numberOfServings: 1, globalId: "globalId", totalTimeInSeconds: 60, rating: 4.5);
+Details menuDetails = Details(totalTime: "10 Minutes", displayName: "Menu", name: "Menu Name", id: "123", recipeId: "123", numberOfServings: 1, globalId: "globalId", totalTimeInSeconds: 60, rating: 4.5);
 
 class ListRecipeModel {
   ListRecipeModel({
@@ -110,7 +110,6 @@ class Details {
     // required this.images,
     required this.name,
     // required this.keywords,
-    required this.brand,
     required this.id,
     // required this.attribution,
     required this.recipeId,
@@ -125,7 +124,6 @@ class Details {
   // List<Picture>? images;
   String? name;
   // List<String> keywords;
-  dynamic brand;
   String? id;
   // Attribution attribution;
   String? recipeId;
@@ -141,7 +139,6 @@ class Details {
         //         json["images"].map((x) => Picture.fromJson(x))),
         name: json["name"] ?? "Menu Name",
         // keywords: List<String>.from(json["keywords"].map((x) => x)),
-        brand: json["brand"] ?? "Menu Brand",
         id: json["id"] ?? "Recipe ID",
         // attribution: Attribution.fromJson(json["attribution"]),
         recipeId: json["recipeId"] ?? "123",
@@ -157,7 +154,6 @@ class Details {
         // "images": List<dynamic>.from(images!.map((x) => x.toJson())),
         "name": name,
         // "keywords": List<dynamic>.from(keywords.map((x) => x)),
-        "brand": brand,
         "id": id,
         // "attribution": attribution.toJson(),
         "recipeId": recipeId,

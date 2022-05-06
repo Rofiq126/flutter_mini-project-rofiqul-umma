@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:my_recipe/model/api/my_recipe_model_2.dart';
+import 'package:my_recipe/model/api/my_recipe_model_3.dart';
 
 class RecipeAPI {
   static Future<List<Feed>> getRecipe() async {
@@ -37,7 +37,7 @@ class RecipeAPI {
         response.statusCode == 201 ||
         response.statusCode == 202 ||
         response.statusCode == 203) {
-      ListRecipeModel listRecipeModel = ListRecipeModel.fromJson(data);
+      ListsModelRecipe listRecipeModel = ListsModelRecipe.fromJson(data);
       List<Feed> listFeed = data.feed;
       return listFeed;
     }
