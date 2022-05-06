@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:my_recipe/model/api/my_recipe_model_2.dart';
+import 'package:my_recipe/model/api/my_recipe_model_3.dart';
 
 class RecipeAPI {
   static Future<List<Feed>> getRecipe() async {
     var uri = Uri.https(
-        "yummly2.p.rapidapi.com", "/feeds/list", {"limit": "18", "start": "0"});
+        "yummly2.p.rapidapi.com", "/feeds/list", {"limit": "2", "start": "0"});
 
     final response = await Dio().getUri(uri,
         options: Options(headers: {
@@ -37,8 +37,8 @@ class RecipeAPI {
         response.statusCode == 201 ||
         response.statusCode == 202 ||
         response.statusCode == 203) {
-      ListRecipeModel listRecipeModel = ListRecipeModel.fromJson(data);
-      List<Feed> listFeed = data.feed;
+      ListsModelRecipe listRecipeModel = ListsModelRecipe.fromJson(data);
+      List<Feed> listFeed = listRecipeModel.feed;
       return listFeed;
     }
 
