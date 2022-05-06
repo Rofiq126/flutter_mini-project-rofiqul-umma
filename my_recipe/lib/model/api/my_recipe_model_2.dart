@@ -18,7 +18,16 @@ List<Picture> listPicture = [
       resizableImageHeight: 100,
       resizableImageWidth: 100)
 ];
-Details menuDetails = Details(totalTime: "10 Minutes", displayName: "Menu", name: "Menu Name", brand: "brand", id: "123", recipeId: "123", numberOfServings: 1, globalId: "globalId", totalTimeInSeconds: 60, rating: 4.5);
+Details menuDetails = Details(
+    totalTime: "10 Minutes",
+    displayName: "Menu",
+    name: "Menu Name",
+    id: "123",
+    recipeId: "123",
+    numberOfServings: 1,
+    globalId: "globalId",
+    totalTimeInSeconds: 60,
+    rating: 4.5);
 
 class ListRecipeModel {
   ListRecipeModel({
@@ -78,7 +87,7 @@ class Content {
   // Reviews? reviews;
   int? preparationStepCount;
 
-  factory Content.fromJson(Map<String, dynamic> json) => Content(
+  factory Content.fromJson(Map<String?, dynamic> json) => Content(
         description: json["description"],
         preparationSteps: json["preparationSteps"],
         details: Details.fromJson(json["details"]),
@@ -110,7 +119,6 @@ class Details {
     // required this.images,
     required this.name,
     // required this.keywords,
-    required this.brand,
     required this.id,
     // required this.attribution,
     required this.recipeId,
@@ -120,28 +128,26 @@ class Details {
     required this.rating,
   });
 
-  String? totalTime;
-  String? displayName;
+  String totalTime = '';
+  String displayName = '';
   // List<Picture>? images;
-  String? name;
+  String name = '';
   // List<String> keywords;
-  dynamic brand;
-  String? id;
+  String id = '';
   // Attribution attribution;
-  String? recipeId;
-  int? numberOfServings;
-  String? globalId;
-  int? totalTimeInSeconds;
-  double? rating;
+  String recipeId = '';
+  int numberOfServings = 0;
+  String globalId = '';
+  int totalTimeInSeconds = 0;
+  double rating = 0.0;
 
-  factory Details.fromJson(Map<String, dynamic> json) => Details(
+  factory Details.fromJson(Map<String?, dynamic> json) => Details(
         totalTime: json["totalTime"] ?? "10 Minutes",
         displayName: json["displayName"] ?? "Display Name Menu",
         // images: List<Picture>.from(
         //         json["images"].map((x) => Picture.fromJson(x))),
         name: json["name"] ?? "Menu Name",
         // keywords: List<String>.from(json["keywords"].map((x) => x)),
-        brand: json["brand"] ?? "Menu Brand",
         id: json["id"] ?? "Recipe ID",
         // attribution: Attribution.fromJson(json["attribution"]),
         recipeId: json["recipeId"] ?? "123",
@@ -157,7 +163,6 @@ class Details {
         // "images": List<dynamic>.from(images!.map((x) => x.toJson())),
         "name": name,
         // "keywords": List<dynamic>.from(keywords.map((x) => x)),
-        "brand": brand,
         "id": id,
         // "attribution": attribution.toJson(),
         "recipeId": recipeId,
@@ -288,21 +293,6 @@ class IngredientLine {
 //       };
 // }
 
-enum Abbreviation { KCAL, G, IU }
-
-final abbreviationValues = EnumValues(
-    {"g": Abbreviation.G, "IU": Abbreviation.IU, "kcal": Abbreviation.KCAL});
-
-enum Name { CALORIE, GRAM, IU }
-
-final nameValues =
-    EnumValues({"calorie": Name.CALORIE, "gram": Name.GRAM, "IU": Name.IU});
-
-enum Plural { CALORIES, GRAMS, IU }
-
-final pluralValues = EnumValues(
-    {"calories": Plural.CALORIES, "grams": Plural.GRAMS, "IU": Plural.IU});
-
 class Reviews {
   Reviews({
     required this.mobileSectionName,
@@ -339,109 +329,109 @@ class Reviews {
       };
 }
 
-class Profile {
-  Profile({
-    required this.profileName,
-    required this.displayName,
-    required this.siteUrl,
-    required this.pictureUrl,
-    required this.pageUrl,
-    required this.description,
-    required this.type,
-    required this.profileUrl,
-  });
+// class Profile {
+//   Profile({
+//     required this.profileName,
+//     required this.displayName,
+//     required this.siteUrl,
+//     required this.pictureUrl,
+//     required this.pageUrl,
+//     required this.description,
+//     required this.type,
+//     required this.profileUrl,
+//   });
 
-  String profileName;
-  String displayName;
-  String siteUrl;
-  String pictureUrl;
-  String pageUrl;
-  dynamic description;
-  String type;
-  String profileUrl;
+//   String profileName;
+//   String displayName;
+//   String siteUrl;
+//   String pictureUrl;
+//   String pageUrl;
+//   dynamic description;
+//   String type;
+//   String profileUrl;
 
-  factory Profile.fromJson(Map<String?, dynamic> json) => Profile(
-        profileName: json["profileName"],
-        displayName: json["displayName"],
-        siteUrl: json["siteUrl"],
-        pictureUrl: json["pictureUrl"],
-        pageUrl: json["pageUrl"],
-        description: json["description"],
-        type: json["type"],
-        profileUrl: json["profileUrl"],
-      );
+//   factory Profile.fromJson(Map<String?, dynamic> json) => Profile(
+//         profileName: json["profileName"],
+//         displayName: json["displayName"],
+//         siteUrl: json["siteUrl"],
+//         pictureUrl: json["pictureUrl"],
+//         pageUrl: json["pageUrl"],
+//         description: json["description"],
+//         type: json["type"],
+//         profileUrl: json["profileUrl"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "profileName": profileName,
-        "displayName": displayName,
-        "siteUrl": siteUrl,
-        "pictureUrl": pictureUrl,
-        "pageUrl": pageUrl,
-        "description": description,
-        "type": type,
-        "profileUrl": profileUrl,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "profileName": profileName,
+//         "displayName": displayName,
+//         "siteUrl": siteUrl,
+//         "pictureUrl": pictureUrl,
+//         "pageUrl": pageUrl,
+//         "description": description,
+//         "type": type,
+//         "profileUrl": profileUrl,
+//       };
+// }
 
-class Source {
-  Source({
-    required this.sourceRecipeUrl,
-    required this.sourceFaviconUrl,
-    required this.sourceHttpsOk,
-    required this.sourceInFrame,
-    required this.sourceDisplayName,
-    required this.proSource,
-    required this.sourceSiteUrl,
-    required this.eyebrowText,
-    required this.sourcePageUrl,
-    required this.marketingCopy,
-    required this.sourceHttpOk,
-    required this.marketingImage,
-  });
+// class Source {
+//   Source({
+//     required this.sourceRecipeUrl,
+//     required this.sourceFaviconUrl,
+//     required this.sourceHttpsOk,
+//     required this.sourceInFrame,
+//     required this.sourceDisplayName,
+//     required this.proSource,
+//     required this.sourceSiteUrl,
+//     required this.eyebrowText,
+//     required this.sourcePageUrl,
+//     required this.marketingCopy,
+//     required this.sourceHttpOk,
+//     required this.marketingImage,
+//   });
 
-  String sourceRecipeUrl;
-  dynamic sourceFaviconUrl;
-  bool sourceHttpsOk;
-  bool sourceInFrame;
-  String sourceDisplayName;
-  dynamic proSource;
-  String sourceSiteUrl;
-  dynamic eyebrowText;
-  String sourcePageUrl;
-  dynamic marketingCopy;
-  bool sourceHttpOk;
-  dynamic marketingImage;
+//   String sourceRecipeUrl;
+//   dynamic sourceFaviconUrl;
+//   bool sourceHttpsOk;
+//   bool sourceInFrame;
+//   String sourceDisplayName;
+//   dynamic proSource;
+//   String sourceSiteUrl;
+//   dynamic eyebrowText;
+//   String sourcePageUrl;
+//   dynamic marketingCopy;
+//   bool sourceHttpOk;
+//   dynamic marketingImage;
 
-  factory Source.fromJson(Map<String, dynamic> json) => Source(
-        sourceRecipeUrl: json["sourceRecipeUrl"],
-        sourceFaviconUrl: json["sourceFaviconUrl"],
-        sourceHttpsOk: json["sourceHttpsOk"],
-        sourceInFrame: json["sourceInFrame"],
-        sourceDisplayName: json["sourceDisplayName"],
-        proSource: json["proSource"],
-        sourceSiteUrl: json["sourceSiteUrl"],
-        eyebrowText: json["eyebrowText"],
-        sourcePageUrl: json["sourcePageUrl"],
-        marketingCopy: json["marketingCopy"],
-        sourceHttpOk: json["sourceHttpOk"],
-        marketingImage: json["marketingImage"],
-      );
+//   factory Source.fromJson(Map<String, dynamic> json) => Source(
+//         sourceRecipeUrl: json["sourceRecipeUrl"],
+//         sourceFaviconUrl: json["sourceFaviconUrl"],
+//         sourceHttpsOk: json["sourceHttpsOk"],
+//         sourceInFrame: json["sourceInFrame"],
+//         sourceDisplayName: json["sourceDisplayName"],
+//         proSource: json["proSource"],
+//         sourceSiteUrl: json["sourceSiteUrl"],
+//         eyebrowText: json["eyebrowText"],
+//         sourcePageUrl: json["sourcePageUrl"],
+//         marketingCopy: json["marketingCopy"],
+//         sourceHttpOk: json["sourceHttpOk"],
+//         marketingImage: json["marketingImage"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "sourceRecipeUrl": sourceRecipeUrl,
-        "sourceFaviconUrl": sourceFaviconUrl,
-        "sourceHttpsOk": sourceHttpsOk,
-        "sourceInFrame": sourceInFrame,
-        "sourceDisplayName": sourceDisplayName,
-        "proSource": proSource,
-        "sourceSiteUrl": sourceSiteUrl,
-        "eyebrowText": eyebrowText,
-        "sourcePageUrl": sourcePageUrl,
-        "marketingCopy": marketingCopy,
-        "sourceHttpOk": sourceHttpOk,
-        "marketingImage": marketingImage,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "sourceRecipeUrl": sourceRecipeUrl,
+//         "sourceFaviconUrl": sourceFaviconUrl,
+//         "sourceHttpsOk": sourceHttpsOk,
+//         "sourceInFrame": sourceInFrame,
+//         "sourceDisplayName": sourceDisplayName,
+//         "proSource": proSource,
+//         "sourceSiteUrl": sourceSiteUrl,
+//         "eyebrowText": eyebrowText,
+//         "sourcePageUrl": sourcePageUrl,
+//         "marketingCopy": marketingCopy,
+//         "sourceHttpOk": sourceHttpOk,
+//         "marketingImage": marketingImage,
+//       };
+// }
 
 class Snapshot {
   Snapshot({
@@ -463,37 +453,37 @@ class Snapshot {
       };
 }
 
-class SpotlightSearch {
-  SpotlightSearch({
-    required this.keywords,
-    required this.noindex,
-  });
+// class SpotlightSearch {
+//   SpotlightSearch({
+//     required this.keywords,
+//     required this.noindex,
+//   });
 
-  List<String> keywords;
-  bool noindex;
+//   List<String> keywords;
+//   bool noindex;
 
-  factory SpotlightSearch.fromJson(Map<String, dynamic> json) =>
-      SpotlightSearch(
-        keywords: List<String>.from(json["keywords"].map((x) => x)),
-        noindex: json["noindex"],
-      );
+//   factory SpotlightSearch.fromJson(Map<String, dynamic> json) =>
+//       SpotlightSearch(
+//         keywords: List<String>.from(json["keywords"].map((x) => x)),
+//         noindex: json["noindex"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "keywords": List<dynamic>.from(keywords.map((x) => x)),
-        "noindex": noindex,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "keywords": List<dynamic>.from(keywords.map((x) => x)),
+//         "noindex": noindex,
+//       };
+// }
 
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
+// class EnumValues<T> {
+//   Map<String, T> map;
+//   late Map<T, String> reverseMap;
 
-  EnumValues(this.map);
+//   EnumValues(this.map);
 
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
-}
+//   Map<T, String> get reverse {
+//     if (reverseMap == null) {
+//       reverseMap = map.map((k, v) => new MapEntry(v, k));
+//     }
+//     return reverseMap;
+//   }
+// }

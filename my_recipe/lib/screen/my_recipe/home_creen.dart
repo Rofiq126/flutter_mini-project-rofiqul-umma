@@ -96,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final recipes = myRecipeViewModel.recipes[index];
                           return CardRecipe(
-                              foodName: recipes.content.details.name,
+                              foodName: recipes.content.details!.name,
                               foodImage:
                                   'https://i.pinimg.com/originals/f9/f1/e7/f9f1e722c01eb83182adb117026cd1a5.jpg',
                               foodRating:
-                                  recipes.content.details.rating);
+                                  recipes.content.details!.rating);
                         }),
                   )
                 ],
