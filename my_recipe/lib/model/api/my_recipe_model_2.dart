@@ -86,7 +86,7 @@ class Content {
         //     json["ingredientLines"].map((x) => IngredientLine.fromJson(x))),
         unitSystem: json["unitSystem"],
         // reviews: Reviews.fromJson(json["reviews"]),
-        preparationStepCount: json["preparationStepCount"],
+        preparationStepCount: json["preparationStepCount"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,7 +98,7 @@ class Content {
         //     List<dynamic>.from(ingredientLines.map((x) => x.toJson())),
         "unitSystem": unitSystem,
         // "reviews": reviews!.toJson(),
-        "preparationStepCount": preparationStepCount,
+        "preparationStepCount": preparationStepCount ?? 0,
       };
 }
 
@@ -134,20 +134,20 @@ class Details {
   double? rating;
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
-        totalTime: json["totalTime"],
-        displayName: json["displayName"],
+        totalTime: json["totalTime"] ?? "10 Minutes",
+        displayName: json["displayName"] ?? "Display Name Menu",
         // images: List<Picture>.from(
         //         json["images"].map((x) => Picture.fromJson(x))),
-        name: json["name"],
+        name: json["name"] ?? "Menu Name",
         // keywords: List<String>.from(json["keywords"].map((x) => x)),
-        brand: json["brand"],
-        id: json["id"],
+        brand: json["brand"] ?? "Menu Brand",
+        id: json["id"] ?? "Recipe ID",
         // attribution: Attribution.fromJson(json["attribution"]),
         recipeId: json["recipeId"],
-        numberOfServings: json["numberOfServings"],
+        numberOfServings: json["numberOfServings"] ?? 1,
         globalId: json["globalId"],
-        totalTimeInSeconds: json["totalTimeInSeconds"],
-        rating: json["rating"],
+        totalTimeInSeconds: json["totalTimeInSeconds"] ?? 60,
+        rating: json["rating"] ?? 4.0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -167,33 +167,33 @@ class Details {
       };
 }
 
-class Attribution {
-  Attribution({
-    required this.html,
-    required this.url,
-    required this.text,
-    required this.logo,
-  });
-
-  String html;
-  String url;
-  String text;
-  String logo;
-
-  factory Attribution.fromJson(Map<String, dynamic> json) => Attribution(
-        html: json["html"],
-        url: json["url"],
-        text: json["text"],
-        logo: json["logo"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "html": html,
-        "url": url,
-        "text": text,
-        "logo": logo,
-      };
-}
+// class Attribution {
+//   Attribution({
+//     required this.html,
+//     required this.url,
+//     required this.text,
+//     required this.logo,
+//   });
+//
+//   String html;
+//   String url;
+//   String text;
+//   String logo;
+//
+//   factory Attribution.fromJson(Map<String, dynamic> json) => Attribution(
+//         html: json["html"],
+//         url: json["url"],
+//         text: json["text"],
+//         logo: json["logo"],
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "html": html,
+//         "url": url,
+//         "text": text,
+//         "logo": logo,
+//       };
+// }
 
 class Picture {
   Picture({
@@ -244,7 +244,7 @@ class IngredientLine {
   String remainder;
   String wholeLine;
 
-  factory IngredientLine.fromJson(Map<String, dynamic> json) => IngredientLine(
+  factory IngredientLine.fromJson(Map<String?, dynamic> json) => IngredientLine(
         category: json["category"],
         unit: json["unit"],
         ingredientId: json["ingredientId"],
@@ -267,25 +267,25 @@ class IngredientLine {
       };
 }
 
-class MoreContent {
-  MoreContent({
-    required this.mobileSectionName,
-    required this.feed,
-  });
-
-  String mobileSectionName;
-  List<dynamic> feed;
-
-  factory MoreContent.fromJson(Map<String, dynamic> json) => MoreContent(
-        mobileSectionName: json["mobileSectionName"],
-        feed: List<dynamic>.from(json["feed"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "mobileSectionName": mobileSectionName,
-        "feed": List<dynamic>.from(feed.map((x) => x)),
-      };
-}
+// class MoreContent {
+//   MoreContent({
+//     required this.mobileSectionName,
+//     required this.feed,
+//   });
+//
+//   String mobileSectionName;
+//   List<dynamic> feed;
+//
+//   factory MoreContent.fromJson(Map<String, dynamic> json) => MoreContent(
+//         mobileSectionName: json["mobileSectionName"],
+//         feed: List<dynamic>.from(json["feed"].map((x) => x)),
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "mobileSectionName": mobileSectionName,
+//         "feed": List<dynamic>.from(feed.map((x) => x)),
+//       };
+// }
 
 enum Abbreviation { KCAL, G, IU }
 
@@ -359,7 +359,7 @@ class Profile {
   String type;
   String profileUrl;
 
-  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
+  factory Profile.fromJson(Map<String?, dynamic> json) => Profile(
         profileName: json["profileName"],
         displayName: json["displayName"],
         siteUrl: json["siteUrl"],
