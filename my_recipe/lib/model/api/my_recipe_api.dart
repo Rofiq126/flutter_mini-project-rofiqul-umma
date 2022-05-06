@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:my_recipe/model/api/my_recipe_model_3.dart';
+
 import 'package:my_recipe/model/result_model_recipe.dart';
 
 import '../../commons/constant.dart';
 
 class RecipeAPI {
   static Future<List<Result>> getRecipe(String limitNumber) async {
-    var uri = Uri.https(Constant.kRootUrl, Constant.kSearchUrl,
+    var uri = Uri.https('api.spoonacular.com', '/recipes/complexSearch/',
         {"limit": limitNumber, "apiKey": Constant.kApiKeyParams});
 
     final response = await Dio().getUri(uri,
@@ -29,7 +29,7 @@ class RecipeAPI {
         response.statusCode == 202 ||
         response.statusCode == 203) {
       debugPrint('Success Fetching Data');
-      return ResultModelRecipe.fromJson(json.decode(data)).results;
+      return ResultModelRecipe.fromJson(data).results;
     }
 
     debugPrint('Error Fetching data!');

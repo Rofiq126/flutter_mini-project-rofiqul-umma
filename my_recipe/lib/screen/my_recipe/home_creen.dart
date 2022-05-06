@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -89,21 +89,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                        itemCount: myRecipeViewModel.recipes.length,
-                        itemBuilder: (context, index) {
-                          final recipes = myRecipeViewModel.recipes[index];
-                          debugPrint(
-                              myRecipeViewModel.recipes.length.toString());
-                          return CardRecipe(
-                            foodName: recipes.title,
-                            foodImage: recipes.image,
-                            foodRating: 4.5,
-                          );
-                        }),
-                  )
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                      itemCount: myRecipeViewModel.recipes.length,
+                      itemBuilder: (context, index) {
+                        final recipes = myRecipeViewModel.recipes[index];
+                        debugPrint("recipes count : " +
+                            myRecipeViewModel.recipes.length.toString());
+                        return CardRecipe(
+                          foodName: recipes.title,
+                          foodImage: recipes.image,
+                          foodRating: 4.5,
+                        );
+                      })
                 ],
               ),
             )),
@@ -172,7 +171,7 @@ class CardRecipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       height: 180,
       decoration: BoxDecoration(
