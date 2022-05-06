@@ -36,7 +36,7 @@ class AuthViewModel extends ChangeNotifier {
     if (prefs.getString('userName') != null &&
         prefs.getString('email') != null) {
       Timer(
-          const Duration(seconds: 3),
+          const Duration(seconds: 1),
           () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const BottomNavBar())));
     } else {

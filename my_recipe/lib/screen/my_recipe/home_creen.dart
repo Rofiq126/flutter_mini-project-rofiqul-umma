@@ -57,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> getRecipes() async {
     recipe = await RecipeAPI.getRecipe();
-    isLoading = false;
+    setState(() {
+      isLoading = false;
+    });
     print(recipe);
   }
 
@@ -98,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               foodImage:
                                   'https://i.pinimg.com/originals/f9/f1/e7/f9f1e722c01eb83182adb117026cd1a5.jpg',
                               foodRating:
-                                  recipes.content.details.rating.toDouble());
+                                  recipes.content.details.rating);
                         }),
                   )
                 ],
