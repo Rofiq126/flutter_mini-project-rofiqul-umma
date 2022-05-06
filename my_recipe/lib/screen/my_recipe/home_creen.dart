@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_recipe/model/api/my_recipe_api.dart';
 import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,27 +16,33 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late SharedPreferences loginData;
-  String userName = '';
+  String? userName;
   String pictureProfile = '';
+  String? foodName;
+  String? foodImage;
+  double? foodRating;
   AuthViewModel? authProvider;
 
-  late List<Recipe> recipe;
+  late List<Recipe> recipe = [Recipe(name: '', image: '', rating: 0.0)];
   bool isLoading = true;
 
-  @override
-  void initState() {
-    getRecipes();
-    initData();
-    getDataUser();
-    super.initState();
-  }
-
-  Future<void> initData() async {
+  Future<void> initDataUser() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
         authProvider = Provider.of<AuthViewModel>(context, listen: false);
         await authProvider!.getDataUser();
         getDataUser();
+      },
+    );
+  }
+
+  Future<void> initDataRecipe() async {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (timeStamp) async {
+        var myRecipeViewModel =
+            Provider.of<MyRecipeViewModel>(context, listen: false);
+        await myRecipeViewModel.getRecipes();
+        getRecipes();
       },
     );
   }
@@ -52,35 +58,50 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> getRecipes() async {
     recipe = await RecipeAPI.getRecipe();
     isLoading = false;
-    print(recipe.toString());
+    print(recipe);
+  }
+
+  @override
+  void initState() {
+    initDataUser();
+    initDataRecipe();
+    getDataUser();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 25,
-                ),
-                cardGreetings(),
-                const SizedBox(
-                  height: 20,
-                ),
-                isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView.builder(
-                        itemCount: recipe.length,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  cardGreetings(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                        itemCount: myRecipeViewModel.recipes.length,
                         itemBuilder: (context, index) {
-                          return recipeCard(index);
-                        })
-              ],
+                          final recipes = myRecipeViewModel.recipes[index];
+                          return CardRecipe(
+                              foodName: recipes.name ?? '',
+                              foodImage:
+                                  'https://i.pinimg.com/originals/f9/f1/e7/f9f1e722c01eb83182adb117026cd1a5.jpg',
+                              foodRating: recipes.rating ?? 0.0);
+                        }),
+                  )
+                ],
+              ),
             )),
       ),
     );
@@ -130,9 +151,23 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ));
   }
+}
 
-  Widget recipeCard(int index) {
+class CardRecipe extends StatelessWidget {
+  String? foodName;
+  String? foodImage;
+  double? foodRating;
+  CardRecipe({
+    Key? key,
+    required this.foodName,
+    required this.foodImage,
+    required this.foodRating,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       width: double.infinity,
       height: 180,
       decoration: BoxDecoration(
@@ -143,14 +178,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 Colors.black.withOpacity(0.35),
                 BlendMode.multiply,
               ),
-              image: NetworkImage(recipe[index].image),
+              image: NetworkImage(foodImage!),
               fit: BoxFit.cover)),
       child: Stack(children: [
         Align(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Text(
-              recipe[index].name,
+              foodName ?? '',
               style: const TextStyle(fontSize: 19, color: Colors.white),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -174,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   width: 7,
                 ),
-                Text(recipe[index].rating.toString(),
+                Text(foodRating.toString(),
                     style: const TextStyle(color: Colors.white))
               ]),
             ),

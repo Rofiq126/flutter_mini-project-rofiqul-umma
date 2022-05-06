@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AuthViewModel()),
-  ],child: const MyApp()));
+    ChangeNotifierProvider(create: (_) => MyRecipeViewModel()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {

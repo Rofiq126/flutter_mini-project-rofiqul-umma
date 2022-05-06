@@ -1,24 +1,24 @@
 class Recipe {
-  final String name;
-  final String image;
-  final double rating;
+  String? name = '';
+  String? image = '';
+  double? rating = 0.0;
   Recipe({
     required this.name,
     required this.image,
     required this.rating,
   });
 
-  factory Recipe.fromJson(Map<String, dynamic> json) {
+  factory Recipe.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return Recipe(
-      name: json["name"] as String,
-      image: json["images"][0]["hostedLargeUrl"] as String,
-      rating: json["rating"] as double,
+      name: json["name"] as String?,
+      image: json["hostedLargeUrl"] as String?,
+      rating: json["rating"] as double?,
     );
   }
-  static List<Recipe> recipesFromSnapshot(List snapShot) {
-    return snapShot.map((data) {
-      return Recipe.fromJson(data);
-    }).toList();
+  static Future<List<Recipe>> recipesFromSnapshot(List snapShot) async {
+    return snapShot.map((e) => Recipe.fromJson(e!)).toList();
   }
 
   @override
