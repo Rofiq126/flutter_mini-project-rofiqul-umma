@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 
 class RecipeApiDetail {
   static Future<dynamic> getRecipeDetail(String id) async {
-    var uri = Uri.https('api.spoonacular.com', '/$id/information',
+    var uri = Uri.https('api.spoonacular.com', '/recipes/$id/information',
         {"apiKey": "1f65e26d318e4719bcf719aca0395275"});
 
     final response = await Dio().getUri(uri,

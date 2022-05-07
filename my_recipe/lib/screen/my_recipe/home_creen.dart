@@ -38,7 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> initDataRecipe() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
-        var myRecipeViewModel = Provider.of<MyRecipeViewModelHome>(context);
+        var myRecipeViewModel =
+            Provider.of<MyRecipeViewModelHome>(context, listen: false);
         await myRecipeViewModel.getRecipes();
       },
     );
@@ -62,8 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final myRecipeViewModel =
-        Provider.of<MyRecipeViewModelHome>(context, listen: false);
+    final myRecipeViewModel = Provider.of<MyRecipeViewModelHome>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -212,8 +212,14 @@ class CardRecipe extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => OverViewScreen(id: foodId ,)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OverViewScreen(
+                              id: foodId,
+                              nameFood: foodName!,
+                              image: foodImage!,
+                            )));
               },
               child: Container(
                 padding: const EdgeInsets.all(5),

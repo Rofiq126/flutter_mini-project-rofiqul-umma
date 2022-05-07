@@ -5,10 +5,14 @@ import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_detai
 
 class OverViewScreen extends StatefulWidget {
   final String id;
+  final String nameFood;
+  final String image;
 
   const OverViewScreen({
     Key? key,
     required this.id,
+    required this.nameFood,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -21,7 +25,8 @@ class _OverViewScreenState extends State<OverViewScreen> {
   Future<void> initDataRecipe() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
-        myRecipeViewModelDetail = Provider.of<MyRecipeViewModelDetail>(context);
+        myRecipeViewModelDetail =
+            Provider.of<MyRecipeViewModelDetail>(context, listen: false);
         await myRecipeViewModelDetail.getRecipeDetail(widget.id);
       },
     );
@@ -73,7 +78,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Text(
-          myRecipeViewModelDetail.,
+          widget.nameFood,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -87,7 +92,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
   Widget foodImage() {
     return ClipRect(
         child: Image.network(
-      'https://i.pinimg.com/originals/0b/24/b2/0b24b2f23f3ff5d4c995de5c5df45245.jpg',
+      widget.image,
       width: double.infinity,
       height: 230,
       fit: BoxFit.cover,
@@ -109,7 +114,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
           const SizedBox(
             width: 7,
           ),
-          Text("5.0", style: const TextStyle(color: Colors.white))
+          Text(
+              (myRecipeViewModelDetail.recipeDetail.spoonacularScore / 20)
+                  .toString(),
+              style: const TextStyle(color: Colors.white))
         ]),
       ),
     );
@@ -129,7 +137,8 @@ class _OverViewScreenState extends State<OverViewScreen> {
         ),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: 5,
+          itemCount:
+              myRecipeViewModelDetail.recipeDetail.extendedIngredients.length,
           itemBuilder: (context, index) {
             return Container(
               padding:
@@ -147,7 +156,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   const SizedBox(
                     width: 16.0,
                   ),
-                  const Text('Cheese',
+                  Text(
+                      myRecipeViewModelDetail
+                          .recipeDetail.extendedIngredients[index].name,
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w600))
                 ],
