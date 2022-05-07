@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:my_recipe/model/api/my_recipe_api.dart';
-import 'package:my_recipe/model/api/my_recipe_model_3.dart';
-import 'package:my_recipe/model/result_model_recipe.dart';
+import 'package:my_recipe/model/my_recipe_model.dart';
 
-class MyRecipeViewModel extends ChangeNotifier {
+class MyRecipeViewModelHome extends ChangeNotifier {
   List<Result> _recipes = [];
   List<Result> get recipes => _recipes;
 

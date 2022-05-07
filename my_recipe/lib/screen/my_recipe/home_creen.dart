@@ -1,11 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:my_recipe/model/result_model_recipe.dart';
-import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:my_recipe/model/api/my_recipe_api.dart';
+
+import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
+import 'package:my_recipe/screen/my_recipe/overView_screen.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_home.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,9 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   late SharedPreferences loginData;
   String? userName;
   String pictureProfile = '';
-  String? foodName;
-  String? foodImage;
-  double? foodRating;
   AuthViewModel? authProvider;
 
   late List<Result> recipe = [];
@@ -39,10 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> initDataRecipe() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
-        var myRecipeViewModel =
-            Provider.of<MyRecipeViewModel>(context, listen: false);
+        var myRecipeViewModel = Provider.of<MyRecipeViewModelHome>(context);
         await myRecipeViewModel.getRecipes();
-        getRecipes();
       },
     );
   }
@@ -55,14 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future<void> getRecipes() async {
-    recipe = await RecipeAPI.getRecipe("10");
-    setState(() {
-      isLoading = false;
-    });
-    print(recipe);
-  }
-
   @override
   void initState() {
     initDataUser();
@@ -73,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
+    final myRecipeViewModel =
+        Provider.of<MyRecipeViewModelHome>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -90,8 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: myRecipeViewModel.recipes.length,
                       itemBuilder: (context, index) {
                         final recipes = myRecipeViewModel.recipes[index];
@@ -101,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           foodName: recipes.title,
                           foodImage: recipes.image,
                           foodRating: 4.5,
+                          foodId: recipes.id.toString(),
                         );
                       })
                 ],
@@ -160,12 +151,14 @@ class CardRecipe extends StatelessWidget {
   final String? foodName;
   final String? foodImage;
   final double? foodRating;
+  final String foodId;
 
   const CardRecipe({
     Key? key,
     required this.foodName,
     required this.foodImage,
     required this.foodRating,
+    required this.foodId,
   }) : super(key: key);
 
   @override
@@ -218,7 +211,10 @@ class CardRecipe extends StatelessWidget {
               ]),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OverViewScreen(id: foodId ,)));
+              },
               child: Container(
                 padding: const EdgeInsets.all(5),
                 margin: const EdgeInsets.all(10),

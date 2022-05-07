@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/splash_creen.dart';
-import 'package:my_recipe/screen/my_recipe/my_recipe_view_model.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_detail.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_home.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AuthViewModel()),
-    ChangeNotifierProvider(create: (_) => MyRecipeViewModel()),
+    ChangeNotifierProvider(create: (_) => MyRecipeViewModelHome()),
+    ChangeNotifierProvider(create: (_) => MyRecipeViewModelDetail()),
   ], child: const MyApp()));
 }
 

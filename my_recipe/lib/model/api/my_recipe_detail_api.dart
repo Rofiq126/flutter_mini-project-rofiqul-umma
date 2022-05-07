@@ -1,14 +1,13 @@
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:my_recipe/model/my_recipe_detail_model.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 
-import 'package:my_recipe/model/my_recipe_model.dart';
-
-
-class RecipeAPI {
-  static Future<List<Result>> getRecipe(String limitNumber) async {
-    var uri = Uri.https('api.spoonacular.com', '/recipes/complexSearch/',
-        {"limit": limitNumber, "apiKey": "1f65e26d318e4719bcf719aca0395275"});
+class RecipeApiDetail {
+  static Future<dynamic> getRecipeDetail(String id) async {
+    var uri = Uri.https('api.spoonacular.com', '/$id/information',
+        {"apiKey": "1f65e26d318e4719bcf719aca0395275"});
 
     final response = await Dio().getUri(uri,
         options: Options(headers: {
@@ -19,7 +18,6 @@ class RecipeAPI {
           "connection": "keep-alive",
           "content-type": "application/json",
         }));
-
     var jsonString = jsonEncode(response.data);
     var data = jsonDecode(jsonString);
     debugPrint(response.statusCode.toString());
@@ -28,10 +26,10 @@ class RecipeAPI {
         response.statusCode == 202 ||
         response.statusCode == 203) {
       debugPrint('Success Fetching Data');
-      return ResultModelRecipe.fromJson(data).results;
+      return MyRecipeDetail.fromJson(data);
     }
 
     debugPrint('Error Fetching data!');
-    return [];
+    return 'error';
   }
 }
