@@ -40,46 +40,46 @@ class MyRecipeDetail {
     required this.dishTypes,
     required this.diets,
     required this.occasions,
-    required this.winePairing,
+    // required this.winePairing,
     required this.instructions,
     required this.analyzedInstructions,
-    required this.originalId,
+    // required this.originalId,
     required this.spoonacularSourceUrl,
   });
 
-  final bool vegetarian;
-  final bool vegan;
-  final bool glutenFree;
-  final bool dairyFree;
-  final bool veryHealthy;
-  final bool cheap;
-  final bool veryPopular;
-  final bool sustainable;
-  final String gaps;
-  final bool lowFodmap;
-  final int aggregateLikes;
-  final double spoonacularScore;
-  final double healthScore;
-  final String creditsText;
-  final String sourceName;
-  final double pricePerServing;
+  final bool? vegetarian;
+  final bool? vegan;
+  final bool? glutenFree;
+  final bool? dairyFree;
+  final bool? veryHealthy;
+  final bool? cheap;
+  final bool? veryPopular;
+  final bool? sustainable;
+  final String? gaps;
+  final bool? lowFodmap;
+  final int? aggregateLikes;
+  final double? spoonacularScore;
+  final double? healthScore;
+  final String? creditsText;
+  final String? sourceName;
+  final double? pricePerServing;
   final List<ExtendedIngredient> extendedIngredients;
-  final int id;
-  final String title; //
-  final int readyInMinutes;
-  final int servings;
-  final String sourceUrl;
-  final String image; //
-  final String imageType;
-  final String summary;
+  final int? id;
+  final String? title; //
+  final int? readyInMinutes;
+  final int? servings;
+  final String? sourceUrl;
+  final String? image; //
+  final String? imageType;
+  final String? summary;
   final List<String> cuisines;
   final List<String> dishTypes;
   final List<String> diets;
   final List<dynamic> occasions;
-  final WinePairing winePairing;
-  final String instructions; //
+  // final WinePairing winePairing;
+  final String? instructions; //
   final List<AnalyzedInstruction> analyzedInstructions;
-  final dynamic originalId;
+  // final dynamic originalId;
   final String spoonacularSourceUrl;
 
   factory MyRecipeDetail.fromJson(Map<String, dynamic> json) => MyRecipeDetail(
@@ -114,12 +114,12 @@ class MyRecipeDetail {
         dishTypes: List<String>.from(json["dishTypes"].map((x) => x)),
         diets: List<String>.from(json["diets"].map((x) => x)),
         occasions: List<dynamic>.from(json["occasions"].map((x) => x)),
-        winePairing: WinePairing.fromJson(json["winePairing"]),
+        // winePairing: WinePairing.fromJson(json["winePairing"]),
         instructions: json["instructions"],
         analyzedInstructions: List<AnalyzedInstruction>.from(
             json["analyzedInstructions"]
                 .map((x) => AnalyzedInstruction.fromJson(x))),
-        originalId: json["originalId"],
+        // originalId: json["originalId"],
         spoonacularSourceUrl: json["spoonacularSourceUrl"],
       );
 
@@ -154,11 +154,11 @@ class MyRecipeDetail {
         "dishTypes": List<dynamic>.from(dishTypes.map((x) => x)),
         "diets": List<dynamic>.from(diets.map((x) => x)),
         "occasions": List<dynamic>.from(occasions.map((x) => x)),
-        "winePairing": winePairing.toJson(),
+        // "winePairing": winePairing.toJson(),
         "instructions": instructions,
         "analyzedInstructions":
             List<dynamic>.from(analyzedInstructions.map((x) => x.toJson())),
-        "originalId": originalId,
+        // "originalId": originalId,
         "spoonacularSourceUrl": spoonacularSourceUrl,
       };
 }
@@ -278,14 +278,14 @@ class ExtendedIngredient {
   });
 
   final int id;
-  final String aisle;
-  final String image;
-  final String name;
-  final String nameClean;
-  final String original;
-  final String originalName;
-  final double amount;
-  final String unit;
+  final String? aisle;
+  final String? image;
+  final String? name;
+  final String? nameClean;
+  final String? original;
+  final String? originalName;
+  final double? amount;
+  final String? unit;
   final List<String> meta;
   final Measures measures;
 

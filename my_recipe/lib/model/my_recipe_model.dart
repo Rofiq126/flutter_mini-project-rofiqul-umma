@@ -48,10 +48,10 @@ class Result {
     required this.imageType,
   });
 
-  int id;
-  String title;
-  String image;
-  String imageType;
+  int? id;
+  String? title;
+  String? image;
+  String? imageType;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
