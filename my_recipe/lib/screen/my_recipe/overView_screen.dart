@@ -48,42 +48,34 @@ class _OverViewScreenState extends State<OverViewScreen> {
   Widget build(BuildContext context) {
     final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.orangeAccent),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: const Text(
-            'Recipe Overview',
-            style: TextStyle(
-              color: Colors.black87,
-            ),
-          ),
-          centerTitle: true,
+        body: SafeArea(
+      child: SingleChildScrollView(
+        child: Stack(
+          children: [
+            body(myRecipeViewModel),
+            buttonBack(),
+            buttonFavorite(),
+          ],
         ),
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : body(myRecipeViewModel));
+      ),
+    ));
   }
 
   Widget body(MyRecipeViewModel myRecipeViewModelDetail) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          foodImage(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              foodName(),
-              rating(myRecipeViewModelDetail),
-            ],
-          ),
-          listIngrident(myRecipeViewModelDetail),
-          instruction(myRecipeViewModelDetail)
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        foodImage(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            foodName(),
+            rating(myRecipeViewModelDetail),
+          ],
+        ),
+        listIngrident(myRecipeViewModelDetail),
+        instruction(myRecipeViewModelDetail)
+      ],
     );
   }
 
@@ -297,6 +289,47 @@ class _OverViewScreenState extends State<OverViewScreen> {
           // )
         ],
       ),
+    );
+  }
+
+  Widget buttonBack() {
+    return Positioned(
+      top: 25,
+      left: 15,
+      child: Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.black,
+            ),
+          )),
+    );
+  }
+
+  Widget buttonFavorite() {
+    return Positioned(
+      top: 25,
+      right: 15,
+      child: Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: InkWell(
+            onTap: () {},
+            child: const Icon(Icons.favorite_rounded, color: Colors.redAccent),
+          )),
     );
   }
 }

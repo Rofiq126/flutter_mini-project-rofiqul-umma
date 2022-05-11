@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: 25,
                               fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -169,8 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget searchField() {
     return TextFormField(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const SearchScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SearchScreen()));
       },
       readOnly: true,
       decoration: InputDecoration(

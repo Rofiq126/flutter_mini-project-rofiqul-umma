@@ -75,8 +75,8 @@ class _SearchScreenState extends State<SearchScreen> {
         Navigator.pop(context);
       },
       child: Container(
-        width: 30,
-        height: 30,
+        width: 35,
+        height: 35,
         decoration: BoxDecoration(
           color: Colors.orangeAccent,
           borderRadius: BorderRadius.circular(100),
@@ -98,6 +98,16 @@ class _SearchScreenState extends State<SearchScreen> {
           hintText: 'Search any recipe',
           prefixIcon:
               const Icon(Icons.search_rounded, color: Colors.orangeAccent),
+          suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  search.clear();
+                });
+              },
+              icon: const Icon(
+                Icons.clear_rounded,
+                color: Colors.redAccent,
+              )),
           focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: Colors.orangeAccent, width: 2),
@@ -153,8 +163,8 @@ class _SearchScreenState extends State<SearchScreen> {
         });
       },
       child: Container(
-          width: 30,
-          height: 30,
+          width: 35,
+          height: 35,
           decoration: BoxDecoration(
               color: Colors.green, borderRadius: BorderRadius.circular(100)),
           child: const Icon(Icons.done_rounded)),

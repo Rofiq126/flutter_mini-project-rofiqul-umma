@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
             title: 'My Recipe',
             theme: ThemeData(
               fontFamily: 'Poppins',
-              primarySwatch: Colors.blue,
+              primarySwatch: Colors.orange,
             ),
             home: const SplashScreen());
       },
