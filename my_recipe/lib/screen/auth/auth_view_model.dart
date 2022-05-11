@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/login_screen.dart';
 import 'package:my_recipe/screen/auth/model/auth_model.dart';
-import 'package:my_recipe/screen/my_recipe/bottom_navBar.dart';
+import 'package:my_recipe/property/bottom_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -12,6 +12,7 @@ class AuthViewModel extends ChangeNotifier {
   String password = '';
   String profilePicture = '';
   String bannerPicture = '';
+  
 
   void addUser(UserData userLogin) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

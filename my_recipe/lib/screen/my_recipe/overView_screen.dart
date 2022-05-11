@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
-
-import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_detail.dart';
 
 class OverViewScreen extends StatefulWidget {
   final String id;
@@ -25,9 +24,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
   Future<void> initDataRecipe() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
-        var myRecipeViewModelDetail =
-            Provider.of<MyRecipeViewModelDetail>(context, listen: false);
-        await myRecipeViewModelDetail.getRecipeDetail(widget.id);
+        var myRecipeViewModel =
+            Provider.of<MyRecipeViewModel>(context, listen: false);
+        await myRecipeViewModel.getRecipeDetail(widget.id);
       },
     );
   }
@@ -47,11 +46,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final myRecipeViewModelDetail =
-        Provider.of<MyRecipeViewModelDetail>(context);
+    final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
     return Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black87),
+          iconTheme: const IconThemeData(color: Colors.orangeAccent),
           backgroundColor: Colors.white,
           elevation: 0,
           title: const Text(
@@ -66,10 +64,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : body(myRecipeViewModelDetail));
+            : body(myRecipeViewModel));
   }
 
-  Widget body(MyRecipeViewModelDetail myRecipeViewModelDetail) {
+  Widget body(MyRecipeViewModel myRecipeViewModelDetail) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,16 +116,26 @@ class _OverViewScreenState extends State<OverViewScreen> {
   }
 
   Widget foodImage() {
-    return ClipRect(
-        child: Image.network(
-      widget.image,
-      width: double.infinity,
-      height: 230,
-      fit: BoxFit.cover,
-    ));
+    return widget.image.isNotEmpty
+        ? ClipRect(
+            clipBehavior: Clip.antiAlias,
+            child: Image.network(
+              widget.image,
+              width: double.infinity,
+              height: 230,
+              fit: BoxFit.cover,
+            ))
+        : ClipRect(
+            clipBehavior: Clip.antiAlias,
+            child: Image.asset(
+              "assets/background_recipe_image_empty.jpg",
+              width: double.infinity,
+              height: 230,
+              fit: BoxFit.cover,
+            ));
   }
 
-  Widget rating(MyRecipeViewModelDetail myRecipeViewModelDetail) {
+  Widget rating(MyRecipeViewModel myRecipeViewModel) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Container(
@@ -142,12 +150,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
           const SizedBox(
             width: 7,
           ),
-          myRecipeViewModelDetail.recipeDetail.spoonacularScore
-                  .toString()
-                  .isEmpty
+          myRecipeViewModel.recipeDetail.spoonacularScore.toString().isEmpty
               ? const Text(('Error'), style: TextStyle(color: Colors.white))
               : Text(
-                  (myRecipeViewModelDetail.recipeDetail.spoonacularScore! / 20)
+                  (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
                       .toString(),
                   style: const TextStyle(color: Colors.white))
         ]),
@@ -155,7 +161,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
     );
   }
 
-  Widget listIngrident(MyRecipeViewModelDetail myRecipeViewModelDetail) {
+  Widget listIngrident(MyRecipeViewModel myRecipeViewModel) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -167,11 +173,12 @@ class _OverViewScreenState extends State<OverViewScreen> {
         const SizedBox(
           height: 10,
         ),
-        myRecipeViewModelDetail.recipeDetail.extendedIngredients.isNotEmpty
+        myRecipeViewModel.recipeDetail.extendedIngredients.isNotEmpty
             ? ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: myRecipeViewModelDetail
-                    .recipeDetail.extendedIngredients.length,
+                itemCount:
+                    myRecipeViewModel.recipeDetail.extendedIngredients.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
@@ -191,7 +198,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                         ),
                         Expanded(
                           child: Text(
-                              myRecipeViewModelDetail.recipeDetail
+                              myRecipeViewModel.recipeDetail
                                   .extendedIngredients[index].original!,
                               maxLines: 10,
                               textAlign: TextAlign.left,
@@ -229,7 +236,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
     );
   }
 
-  Widget instruction(MyRecipeViewModelDetail myRecipeViewModelDetail) {
+  Widget instruction(MyRecipeViewModel myRecipeViewModel) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -246,9 +253,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
           const SizedBox(
             height: 10,
           ),
-          myRecipeViewModelDetail.recipeDetail.instructions!.isNotEmpty
+          myRecipeViewModel.recipeDetail.instructions != null
               ? Text(
-                  myRecipeViewModelDetail.recipeDetail.instructions!,
+                  myRecipeViewModel.recipeDetail.instructions!,
                   textAlign: TextAlign.justify,
                   style: const TextStyle(color: Colors.black, fontSize: 15),
                 )
@@ -257,6 +264,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   style: TextStyle(color: Colors.black, fontSize: 15)),
           // ListView.builder(
           //   shrinkWrap: true,
+          //   physics: const NeverScrollableScrollPhysics(),
           //   itemCount: myRecipeViewModelDetail
           //       .recipeDetail.analyzedInstructions.length,
           //   itemBuilder: (context, index) {
@@ -277,7 +285,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
           //             child: Text(
           //                 myRecipeViewModelDetail.recipeDetail
           //                     .analyzedInstructions[index].steps[index].step,
-          //                 maxLines: 10,
+          //                 maxLines: 20,
           //                 textAlign: TextAlign.left,
           //                 style: const TextStyle(
           //                     fontSize: 15, fontWeight: FontWeight.w600)),

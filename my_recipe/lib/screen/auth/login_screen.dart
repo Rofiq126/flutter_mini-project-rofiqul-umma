@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/model/auth_model.dart';
-import 'package:my_recipe/screen/my_recipe/bottom_navBar.dart';
+import 'package:my_recipe/property/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -93,7 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return const Text(
       'Login',
       style: TextStyle(
-          fontSize: 30, color: Colors.red, fontWeight: FontWeight.w600),
+          fontSize: 30,
+          color: Colors.orangeAccent,
+          fontWeight: FontWeight.w600),
     );
   }
 
@@ -180,7 +182,8 @@ class _LoginScreenState extends State<LoginScreen> {
             style: ButtonStyle(
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20))),
-                backgroundColor: MaterialStateProperty.all(Colors.red)),
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.orangeAccent)),
             child: const Text('Log in')));
   }
 }

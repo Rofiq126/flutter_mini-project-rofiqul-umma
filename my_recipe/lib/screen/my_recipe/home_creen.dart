@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:my_recipe/property/card_recipe.dart';
+import 'package:my_recipe/screen/my_recipe/search_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
-import 'package:my_recipe/screen/my_recipe/overView_screen.dart';
-import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_home.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -28,16 +29,23 @@ class _HomeScreenState extends State<HomeScreen> {
       (timeStamp) async {
         authProvider = Provider.of<AuthViewModel>(context, listen: false);
         await authProvider!.getDataUser();
+        checkData();
         getDataUser();
       },
     );
+  }
+
+  void checkData() {
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> initDataRecipe() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
         var myRecipeViewModel =
-            Provider.of<MyRecipeViewModelHome>(context, listen: false);
+            Provider.of<MyRecipeViewModel>(context, listen: false);
         await myRecipeViewModel.getRecipes();
       },
     );
@@ -61,189 +69,120 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final myRecipeViewModel = Provider.of<MyRecipeViewModelHome>(context);
+    final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    cardGreetings(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: myRecipeViewModel.recipes.length,
-                        itemBuilder: (context, index) {
-                          final recipes = myRecipeViewModel.recipes[index];
-                          return CardRecipe(
-                            foodName: recipes.title,
-                            foodImage: recipes.image,
-                            foodRating: 4.5,
-                            foodId: recipes.id.toString(),
-                          );
-                        })
-                  ],
+        backgroundColor: Colors.white, body: body(myRecipeViewModel));
+  }
+
+  Widget body(MyRecipeViewModel myRecipeViewModel) {
+    return SafeArea(
+      child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 25,
                 ),
-              )),
-        ));
+                cardGreetings(),
+                const SizedBox(
+                  height: 10,
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: myRecipeViewModel.recipes.length,
+                    itemBuilder: (context, index) {
+                      final recipes = myRecipeViewModel.recipes[index];
+                      return CardRecipe(
+                        like: myRecipeViewModel.recipeDetail.aggregateLikes
+                            .toString(),
+                        foodName: recipes.title,
+                        foodImage: recipes.image,
+                        foodId: recipes.id.toString(),
+                      );
+                    })
+              ],
+            ),
+          )),
+    );
   }
 
   Widget cardGreetings() {
-    return Card(
-        color: Colors.white,
-        elevation: 0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : Card(
+            color: Colors.white,
+            elevation: 0,
+            child: Column(
               children: [
-                Text(
-                  'Hi, $userName,',
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName != null ? 'Hi, $userName,' : 'Hi, Guest',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const Text(
+                          'Welcome to My Recipe',
+                          style: TextStyle(color: Colors.black),
+                        )
+                      ],
+                    ),
+                    ClipOval(
+                        child: pictureProfile.isNotEmpty
+                            ? Image.file(
+                                File(pictureProfile),
+                                fit: BoxFit.cover,
+                                width: 40,
+                                height: 40,
+                              )
+                            : const SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        'assets/empty_profile.webp')),
+                              ))
+                  ],
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
-                const Text(
-                  'Welcome to My Recipe',
-                  style: TextStyle(color: Colors.black),
-                )
+                searchField(),
               ],
-            ),
-            ClipOval(
-                child: pictureProfile.isNotEmpty
-                    ? Image.file(
-                        File(pictureProfile),
-                        fit: BoxFit.cover,
-                        width: 40,
-                        height: 40,
-                      )
-                    : const SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/empty_profile.webp')),
-                      ))
-          ],
-        ));
+            ));
   }
-}
 
-class CardRecipe extends StatelessWidget {
-  final String? foodName;
-  final String? foodImage;
-  final double? foodRating;
-  final String foodId;
-
-  const CardRecipe({
-    Key? key,
-    required this.foodName,
-    required this.foodImage,
-    required this.foodRating,
-    required this.foodId,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
+  Widget searchField() {
+    return TextFormField(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => OverViewScreen(
-                      id: foodId,
-                      nameFood: foodName!,
-                      image: foodImage!,
-                    )));
+            context, MaterialPageRoute(builder: (context) => const SearchScreen()));
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        width: double.infinity,
-        height: 180,
-        decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.35),
-                  BlendMode.multiply,
-                ),
-                image: NetworkImage(foodImage!),
-                fit: BoxFit.cover)),
-        child: Stack(children: [
-          Align(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                foodName ?? '',
-                style: const TextStyle(fontSize: 19, color: Colors.white),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            alignment: Alignment.center,
-          ),
-          Align(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(children: const [
-                      Icon(Icons.restaurant_rounded,
-                          color: Colors.orangeAccent, size: 18),
-                      SizedBox(
-                        width: 7,
-                      ),
-                      Text('Recipe',
-                          style: const TextStyle(color: Colors.white))
-                    ]),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(children: const [
-                        Icon(
-                          Icons.favorite_rounded,
-                          color: Colors.red,
-                          size: 18,
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Text('Favorites', style: TextStyle(color: Colors.white))
-                      ]),
-                    ),
-                  )
-                ]),
-            alignment: Alignment.bottomCenter,
-          )
-        ]),
+      readOnly: true,
+      decoration: InputDecoration(
+        hintText: 'Search any recipe',
+        prefixIcon:
+            const Icon(Icons.search_rounded, color: Colors.orangeAccent),
+        focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.orangeAccent, width: 2),
+            borderRadius: BorderRadius.circular(50)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 2),
+            borderRadius: BorderRadius.circular(50)),
       ),
     );
   }

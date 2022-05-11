@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/splash_creen.dart';
-import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_detail.dart';
-import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model_home.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AuthViewModel()),
-    ChangeNotifierProvider(create: (_) => MyRecipeViewModelHome()),
-    ChangeNotifierProvider(create: (_) => MyRecipeViewModelDetail()),
+    ChangeNotifierProvider(create: (_) => MyRecipeViewModel()),
   ], child: const MyApp()));
 }
 
@@ -24,13 +23,20 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'My Recipe',
-        theme: ThemeData(
-          fontFamily: 'Poppins',
-          primarySwatch: Colors.blue,
-        ),
-        home: const SplashScreen());
+    return ScreenUtilInit(
+      designSize: const Size(1080, 2220),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (child) {
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'My Recipe',
+            theme: ThemeData(
+              fontFamily: 'Poppins',
+              primarySwatch: Colors.blue,
+            ),
+            home: const SplashScreen());
+      },
+    );
   }
 }

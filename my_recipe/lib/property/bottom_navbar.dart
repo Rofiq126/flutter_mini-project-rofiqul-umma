@@ -39,9 +39,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
               activeColor: Colors.grey,
               icon: const Icon(
                 Icons.home_rounded,
-                color: Colors.orange,
+                color: Colors.orangeAccent,
               ),
-              title: const Text('Home')),
+              title: const Text(
+                'Home',
+                style: TextStyle(
+                    color: Colors.black87, fontWeight: FontWeight.w600),
+              )),
           BottomNavyBarItem(
               textAlign: TextAlign.center,
               activeColor: Colors.grey,
@@ -49,7 +53,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 Icons.favorite_rounded,
                 color: Colors.orangeAccent,
               ),
-              title: const Text('Favorites')),
+              title: const Text(
+                'Favorites',
+                style: TextStyle(
+                    color: Colors.black87, fontWeight: FontWeight.w600),
+              )),
           BottomNavyBarItem(
               textAlign: TextAlign.center,
               activeColor: Colors.grey,
@@ -57,7 +65,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 Icons.account_circle,
                 color: Colors.orangeAccent,
               ),
-              title: const Text('Profile')),
+              title: const Text(
+                'Profile',
+                style: TextStyle(
+                    color: Colors.black87, fontWeight: FontWeight.w600),
+              )),
         ]);
   }
 }

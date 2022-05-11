@@ -77,10 +77,10 @@ class MyRecipeDetail {
   final List<String> diets;
   final List<dynamic> occasions;
   // final WinePairing winePairing;
-  final String? instructions; //
+  String? instructions = ''; //
   final List<AnalyzedInstruction> analyzedInstructions;
   // final dynamic originalId;
-  final String spoonacularSourceUrl;
+  final String? spoonacularSourceUrl;
 
   factory MyRecipeDetail.fromJson(Map<String, dynamic> json) => MyRecipeDetail(
         vegetarian: json["vegetarian"],
@@ -277,7 +277,7 @@ class ExtendedIngredient {
     required this.measures,
   });
 
-  final int id;
+  final int? id;
   final String? aisle;
   final String? image;
   final String? name;

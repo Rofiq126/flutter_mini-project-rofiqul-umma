@@ -31,12 +31,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       (timeStamp) async {
         loginProvider = Provider.of<AuthViewModel>(context, listen: false);
         await loginProvider!.getDataUser();
-        getDataUser();
+        getDataUserLogin();
       },
     );
   }
 
-  getDataUser() async {
+  void getDataUserLogin() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
       userNameController.text = loginProvider!.userName;
@@ -60,156 +60,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            if (loginProvider != null)
-              //Profile picture
-              profilePict(loginProvider!),
-            const SizedBox(
-              height: 5,
-            ),
-            textFormFieldUserName(),
-            const SizedBox(height: 5),
-            textFormFieldEmail(),
-            const SizedBox(height: 5),
-            textFormFieldPassword(),
-            const SizedBox(
-              height: 30,
-            ),
-            if (loginProvider != null) buttonLogout(loginProvider!),
-          ],
+        child: SingleChildScrollView(
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              //Image banner
+              bannerPicture(),
+              //Button pickImageBanner
+              if (loginProvider != null) buttonPickImageBanner(loginProvider!),
+              //Profile image
+              profilePict(),
+              //button PickImageProfile
+              if (loginProvider != null) buttonPickImageProfile(loginProvider!),
+              //Card data user
+              if (loginProvider != null) cardDataUser(loginProvider!),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget profilePict(AuthViewModel loginProvider) {
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        Positioned(
-            child: ClipRect(
-                child: banerProfile.isNotEmpty
-                    ? Image.file(
-                        File(banerProfile),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 165,
-                      )
-                    : Container(
-                        color: Colors.grey,
-                        width: double.infinity,
-                        height: 165,
-                      ))),
-        Center(
-          heightFactor: 1.4,
-          child: SizedBox(
-            height: 210,
-            width: 210,
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: ClipOval(
-                  child: pictureProfile.isNotEmpty
-                      ? Image.file(
-                          File(pictureProfile),
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
-                        )
-                      : const SizedBox(
-                          width: 200,
-                          height: 200,
-                          child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/empty_profile.webp')),
-                        )),
-            ),
-          ),
+  Widget profilePict() {
+    return Center(
+      heightFactor: 1.9,
+      child: SizedBox(
+        height: 210,
+        width: 210,
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: ClipOval(
+              child: pictureProfile.isNotEmpty
+                  ? Image.file(
+                      File(pictureProfile),
+                      fit: BoxFit.cover,
+                      width: 200,
+                      height: 200,
+                    )
+                  : const SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: CircleAvatar(
+                          backgroundImage:
+                              AssetImage('assets/empty_profile.webp')),
+                    )),
         ),
-        Positioned(
-            top: 210,
-            right: 130,
-            child: InkWell(
-              onTap: () {
-                loginProvider.pickImageProfile().then((_) => getDataUser());
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 3.5),
-                    shape: BoxShape.circle,
-                    color: Colors.orangeAccent),
-                child: pictureProfile.isNotEmpty
-                    ? const Icon(Icons.edit_rounded, color: Colors.white)
-                    : const Icon(
-                        Icons.add_a_photo,
-                        color: Colors.white,
-                      ),
-              ),
-            )),
-        Positioned(
-            top: 117,
-            right: 7,
-            child: InkWell(
-              onTap: () {
-                loginProvider.pickImageBanner().then((_) => getDataUser());
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.transparent),
-                child: banerProfile.isNotEmpty
-                    ? const Icon(Icons.edit_rounded, color: Colors.white)
-                    : const Icon(
-                        Icons.add_a_photo,
-                        color: Colors.white,
-                      ),
-              ),
-            )),
-      ],
+      ),
     );
   }
 
   Widget textFormFieldUserName() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      child: TextFormField(
-        controller: userNameController,
-        readOnly: true,
-        decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.person_rounded, color: Colors.orangeAccent),
-            labelText: 'UserName'),
-      ),
+    return TextFormField(
+      controller: userNameController,
+      readOnly: true,
+      decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.person_rounded, color: Colors.orangeAccent),
+          labelText: 'UserName'),
     );
   }
 
   Widget textFormFieldEmail() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      child: TextFormField(
-        controller: emailController,
-        readOnly: true,
-        decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.email_rounded, color: Colors.orangeAccent),
-            labelText: 'Email'),
-      ),
+    return TextFormField(
+      controller: emailController,
+      readOnly: true,
+      decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.email_rounded, color: Colors.orangeAccent),
+          labelText: 'Email'),
     );
   }
 
   Widget textFormFieldPassword() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      child: TextFormField(
-        obscureText: true,
-        controller: passwordController,
-        readOnly: true,
-        decoration: const InputDecoration(
-            prefixIcon:
-                Icon(Icons.password_rounded, color: Colors.orangeAccent),
-            labelText: 'Password'),
-      ),
+    return TextFormField(
+      obscureText: true,
+      controller: passwordController,
+      readOnly: true,
+      decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.password_rounded, color: Colors.orangeAccent),
+          labelText: 'Password'),
     );
   }
 
@@ -222,17 +149,106 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(Colors.white),
+          backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),
       label: const Text(
         'Logout',
-        style: TextStyle(color: Colors.grey),
+        style: TextStyle(color: Colors.white),
       ),
       icon: const Icon(
         Icons.logout,
-        color: Colors.grey,
+        color: Colors.white,
       ),
     );
+  }
+
+  Widget cardDataUser(AuthViewModel loginProvider) {
+    return Center(
+      heightFactor: 2.8,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Card(
+            color: Colors.white,
+            elevation: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  textFormFieldUserName(),
+                  const SizedBox(height: 5),
+                  textFormFieldEmail(),
+                  const SizedBox(height: 5),
+                  textFormFieldPassword(),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  buttonLogout(loginProvider),
+                ],
+              ),
+            )),
+      ),
+    );
+  }
+
+  Widget bannerPicture() {
+    return Positioned(
+        child: ClipRect(
+            child: banerProfile.isNotEmpty
+                ? Image.file(File(banerProfile),
+                    fit: BoxFit.cover, width: double.infinity, height: 210)
+                : Container(
+                    color: Colors.grey,
+                    width: double.infinity,
+                    height: 210,
+                  )));
+  }
+
+  Widget buttonPickImageProfile(AuthViewModel loginProvider) {
+    return Positioned(
+        top: 255,
+        right: 130,
+        child: InkWell(
+          onTap: () {
+            loginProvider.pickImageProfile().then((_) => initData());
+          },
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 3.5),
+                shape: BoxShape.circle,
+                color: Colors.orangeAccent),
+            child: pictureProfile.isNotEmpty
+                ? const Icon(Icons.edit_rounded, color: Colors.white)
+                : const Icon(
+                    Icons.add_a_photo,
+                    color: Colors.white,
+                  ),
+          ),
+        ));
+  }
+
+  Widget buttonPickImageBanner(AuthViewModel loginProvider) {
+    return Positioned(
+        top: 165,
+        right: 7,
+        child: InkWell(
+          onTap: () {
+            loginProvider.pickImageBanner().then((_) => initData());
+          },
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle, color: Colors.transparent),
+            child: banerProfile.isNotEmpty
+                ? const Icon(Icons.edit_rounded, color: Colors.white)
+                : const Icon(
+                    Icons.add_a_photo,
+                    color: Colors.white,
+                  ),
+          ),
+        ));
   }
 }
