@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipe/model/my_recipe_model.dart';
+import 'package:my_recipe/screen/my_recipe/favorites_screen.dart';
 
 import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CardRecipe extends StatelessWidget {
   final String? foodName;
@@ -18,6 +23,7 @@ class CardRecipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -81,7 +87,16 @@ class CardRecipe extends StatelessWidget {
                     ]),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      myRecipeViewModel.addFavorites(Favorites(
+                          name: foodName!,
+                          id: foodId,
+                          image: foodImage!,
+                          rating: (myRecipeViewModel
+                                      .recipeDetail.spoonacularScore! /
+                                  2)
+                              .toString()));
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(5),
                       margin: const EdgeInsets.all(10),

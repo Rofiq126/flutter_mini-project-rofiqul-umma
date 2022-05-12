@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/loading_screen.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
           children: [
             body(myRecipeViewModel),
             buttonBack(),
-            buttonFavorite(),
+            buttonFavorite(myRecipeViewModel),
           ],
         ),
       ),
@@ -293,7 +294,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
     );
   }
 
-  Widget buttonFavorite() {
+  Widget buttonFavorite(MyRecipeViewModel myRecipeViewModel) {
     return Positioned(
       top: 25,
       right: 15,
@@ -304,7 +305,15 @@ class _OverViewScreenState extends State<OverViewScreen> {
             borderRadius: BorderRadius.circular(100),
           ),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              myRecipeViewModel.addFavorites(Favorites(
+                  name: widget.nameFood,
+                  id: widget.id,
+                  image: widget.image,
+                  rating:
+                      (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
+                          .toString()));
+            },
             child: const Icon(Icons.favorite_rounded, color: Colors.redAccent),
           )),
     );

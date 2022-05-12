@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:my_recipe/model/api/my_recipe_api.dart';
 import 'package:my_recipe/model/my_recipe_detail_model.dart';
 import 'package:my_recipe/model/my_recipe_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum MyRecipeViewState { none, loading, error }
 
 class MyRecipeViewModel extends ChangeNotifier {
+  List<Favorites> _idFoods = [];
+  List<Favorites> get idFoods => _idFoods;
   List<Result> _recipes = [];
   List<Result> get recipes => _recipes;
 
@@ -88,6 +93,52 @@ class MyRecipeViewModel extends ChangeNotifier {
       _search = data;
       notifyListeners();
       changeState(MyRecipeViewState.none);
+    } catch (e) {
+      changeState(MyRecipeViewState.error);
+    }
+  }
+
+  Future<void> addFavorites(Favorites favorites) async {
+    changeState(MyRecipeViewState.loading);
+    try {
+      _idFoods.add(favorites);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final listJson = _idFoods.map((value) {
+        return value.toMap();
+      }).toList();
+      final jsonString = jsonEncode(listJson);
+      prefs.setString('listGetFavorites', jsonString);
+      notifyListeners();
+      changeState(MyRecipeViewState.none);
+    } catch (e) {
+      changeState(MyRecipeViewState.error);
+    }
+  }
+
+  Future<void> deleteFavorite(int index) async {
+    changeState(MyRecipeViewState.loading);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('listGetFavorites');
+      _idFoods.removeAt(index);
+      notifyListeners();
+      changeState(MyRecipeViewState.none);
+    } catch (e) {
+      changeState(MyRecipeViewState.error);
+    }
+  }
+
+  Future<void> getListFavorites() async {
+    changeState(MyRecipeViewState.loading);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString('listGetFavorites');
+      if (jsonString != null) {
+        final result = jsonDecode(jsonString);
+        _idFoods = ListgetFavorites.fromList(result);
+        notifyListeners();
+        changeState(MyRecipeViewState.none);
+      }
     } catch (e) {
       changeState(MyRecipeViewState.error);
     }

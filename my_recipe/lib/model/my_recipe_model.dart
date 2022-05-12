@@ -67,3 +67,45 @@ class Result {
         "imageType": imageType,
       };
 }
+
+class Favorites {
+  String name = '';
+  String id = '';
+  String image = '';
+  String rating = '';
+  Favorites({
+    required this.name,
+    required this.id,
+    required this.image,
+    required this.rating,
+  });
+  Map<String, dynamic> toMap() {
+    var map = <String, Object?>{
+      'name': name,
+      'id': id,
+      'image': image,
+      'rating': rating
+    };
+    return map;
+  }
+
+  Favorites.fromMap(Map<String, dynamic> map) {
+    name = map['name'];
+    id = map['id'];
+    image = map['image'];
+    rating = map['rating'];
+  }
+}
+class ListgetFavorites {
+  List<Favorites> listGetFavorites = [];
+  Map<String, dynamic> toMap() {
+    var map = <String, Object?>{'listGetFavorites': listGetFavorites};
+    return map;
+  }
+
+  static  List<Favorites> fromList(List<dynamic> map) {
+     return map.map((e) {
+      return Favorites.fromMap(e);
+    }).toList();
+  }
+}
