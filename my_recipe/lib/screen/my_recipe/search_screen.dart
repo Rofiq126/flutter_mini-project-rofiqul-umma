@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipe/screen/my_recipe/overView_screen.dart';
+import 'package:loading_animations/loading_animations.dart';
+import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
@@ -53,14 +54,16 @@ class _SearchScreenState extends State<SearchScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //Button back
                   buttonBack(),
+                  //Textfield Search
                   textFieldSearch(myRecipeViewModel),
-                  buttonDone(myRecipeViewModel)
                 ],
               ),
               const SizedBox(
                 height: 20,
               ),
+              //List result search
               listResultSearch(myRecipeViewModel),
             ],
           ),
@@ -90,37 +93,61 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget textFieldSearch(MyRecipeViewModel myRecipeViewModel) {
-    return SizedBox(
-      width: 310,
-      child: TextFormField(
-        controller: search,
-        decoration: InputDecoration(
-          hintText: 'Search any recipe',
-          prefixIcon:
-              const Icon(Icons.search_rounded, color: Colors.orangeAccent),
-          suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  search.clear();
-                });
-              },
-              icon: const Icon(
-                Icons.clear_rounded,
-                color: Colors.redAccent,
-              )),
-          focusedBorder: OutlineInputBorder(
-              borderSide:
-                  const BorderSide(color: Colors.orangeAccent, width: 2),
-              borderRadius: BorderRadius.circular(50)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.grey, width: 2),
-              borderRadius: BorderRadius.circular(50)),
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: TextFormField(
+          controller: search,
+          onChanged: (value) {
+            myRecipeViewModel
+                .getResultSearch(search.text)
+                .then((value) => initState());
+          },
+          decoration: InputDecoration(
+            hintText: 'Search any recipe',
+            prefixIcon:
+                const Icon(Icons.search_rounded, color: Colors.orangeAccent),
+            suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    search.clear();
+                  });
+                },
+                icon: const Icon(
+                  Icons.clear_rounded,
+                  color: Colors.redAccent,
+                )),
+            focusedBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: Colors.orangeAccent, width: 2),
+                borderRadius: BorderRadius.circular(15)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.circular(15)),
+          ),
         ),
       ),
     );
   }
 
   Widget listResultSearch(MyRecipeViewModel myRecipeViewModel) {
+    final isLoading = myRecipeViewModel.state == MyRecipeViewState.loading;
+    final isError = myRecipeViewModel.state == MyRecipeViewState.error;
+    if (isLoading) {
+      return Center(
+        child: LoadingFadingLine.circle(
+          borderColor: Colors.orange,
+          size: 40,
+          backgroundColor: Colors.orangeAccent,
+          duration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -151,24 +178,6 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           );
         });
-  }
-
-  Widget buttonDone(MyRecipeViewModel myRecipeViewModel) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          myRecipeViewModel
-              .getResultSearch(search.text)
-              .then((value) => initState());
-        });
-      },
-      child: Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-              color: Colors.green, borderRadius: BorderRadius.circular(100)),
-          child: const Icon(Icons.done_rounded)),
-    );
   }
 
   Widget buildSearch() => SearchScreen(

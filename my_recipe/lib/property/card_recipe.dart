@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:my_recipe/screen/my_recipe/overView_screen.dart';
+import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
 
 class CardRecipe extends StatelessWidget {
   final String? foodName;

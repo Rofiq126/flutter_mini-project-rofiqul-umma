@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/property/card_recipe.dart';
 import 'package:my_recipe/screen/my_recipe/search_screen.dart';
 import 'package:provider/provider.dart';
@@ -71,15 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
     return Scaffold(
-        backgroundColor: Colors.white, body: body(myRecipeViewModel));
-  }
-
-  Widget body(MyRecipeViewModel myRecipeViewModel) {
-    return SafeArea(
-      child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: SingleChildScrollView(
-            child: Column(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: SingleChildScrollView(
+                child: Column(
               children: [
                 const SizedBox(
                   height: 25,
@@ -88,24 +86,43 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: myRecipeViewModel.recipes.length,
-                    itemBuilder: (context, index) {
-                      final recipes = myRecipeViewModel.recipes[index];
-                      return CardRecipe(
-                        like: myRecipeViewModel.recipeDetail.aggregateLikes
-                            .toString(),
-                        foodName: recipes.title,
-                        foodImage: recipes.image,
-                        foodId: recipes.id.toString(),
-                      );
-                    })
+                listRecipe(myRecipeViewModel),
               ],
-            ),
-          )),
-    );
+            )),
+          ),
+        ));
+  }
+
+  Widget listRecipe(MyRecipeViewModel myRecipeViewModel) {
+    final isLoading = myRecipeViewModel.state == MyRecipeViewState.loading;
+    final isError = myRecipeViewModel.state == MyRecipeViewState.error;
+    if (isLoading) {
+      return Center(
+          child: LoadingFadingLine.circle(
+        borderColor: Colors.orange,
+        size: 40,
+        backgroundColor: Colors.orangeAccent,
+        duration: const Duration(milliseconds: 500),
+      ));
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: myRecipeViewModel.recipes.length,
+        itemBuilder: (context, index) {
+          final recipes = myRecipeViewModel.recipes[index];
+          return CardRecipe(
+            like: myRecipeViewModel.recipeDetail.aggregateLikes.toString(),
+            foodName: recipes.title,
+            foodImage: recipes.image,
+            foodId: recipes.id.toString(),
+          );
+        });
   }
 
   Widget cardGreetings() {
@@ -179,10 +196,10 @@ class _HomeScreenState extends State<HomeScreen> {
             const Icon(Icons.search_rounded, color: Colors.orangeAccent),
         focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.orangeAccent, width: 2),
-            borderRadius: BorderRadius.circular(50)),
+            borderRadius: BorderRadius.circular(15)),
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.grey, width: 2),
-            borderRadius: BorderRadius.circular(50)),
+            borderRadius: BorderRadius.circular(15)),
       ),
     );
   }

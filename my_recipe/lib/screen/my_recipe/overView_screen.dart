@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:my_recipe/screen/loading_screen.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +49,18 @@ class _OverViewScreenState extends State<OverViewScreen> {
   @override
   Widget build(BuildContext context) {
     final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
+    final isLoading = myRecipeViewModel.state == MyRecipeViewState.loading;
+    final isError = myRecipeViewModel.state == MyRecipeViewState.error;
+    if (isLoading) {
+      return const Center(
+        child: LoadingScreen(),
+      );
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There somenthing wrong :('),
+      );
+    }
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -61,7 +75,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
     ));
   }
 
-  Widget body(MyRecipeViewModel myRecipeViewModelDetail) {
+  Widget body(MyRecipeViewModel myRecipeViewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -70,11 +84,11 @@ class _OverViewScreenState extends State<OverViewScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             foodName(),
-            rating(myRecipeViewModelDetail),
+            rating(myRecipeViewModel),
           ],
         ),
-        listIngrident(myRecipeViewModelDetail),
-        instruction(myRecipeViewModelDetail)
+        listIngrident(myRecipeViewModel),
+        instruction(myRecipeViewModel)
       ],
     );
   }
@@ -246,47 +260,12 @@ class _OverViewScreenState extends State<OverViewScreen> {
             height: 10,
           ),
           myRecipeViewModel.recipeDetail.instructions != null
-              ? Text(
-                  myRecipeViewModel.recipeDetail.instructions!,
-                  textAlign: TextAlign.justify,
-                  style: const TextStyle(color: Colors.black, fontSize: 15),
+              ? Html(
+                  data: myRecipeViewModel.recipeDetail.instructions!,
                 )
               : const Text('Error',
                   textAlign: TextAlign.justify,
                   style: TextStyle(color: Colors.black, fontSize: 15)),
-          // ListView.builder(
-          //   shrinkWrap: true,
-          //   physics: const NeverScrollableScrollPhysics(),
-          //   itemCount: myRecipeViewModelDetail
-          //       .recipeDetail.analyzedInstructions.length,
-          //   itemBuilder: (context, index) {
-          //     return Padding(
-          //       padding:
-          //           const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-          //       child: Row(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: [
-          //           Text(myRecipeViewModelDetail.recipeDetail
-          //                   .analyzedInstructions[index].steps[index].number
-          //                   .toString() +
-          //               '.'),
-          //           const SizedBox(
-          //             width: 16.0,
-          //           ),
-          //           Expanded(
-          //             child: Text(
-          //                 myRecipeViewModelDetail.recipeDetail
-          //                     .analyzedInstructions[index].steps[index].step,
-          //                 maxLines: 20,
-          //                 textAlign: TextAlign.left,
-          //                 style: const TextStyle(
-          //                     fontSize: 15, fontWeight: FontWeight.w600)),
-          //           )
-          //         ],
-          //       ),
-          //     );
-          //   },
-          // )
         ],
       ),
     );
@@ -297,10 +276,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
       top: 25,
       left: 15,
       child: Container(
-          width: 35,
-          height: 35,
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.orangeAccent,
+            color: Colors.black.withOpacity(0.35),
             borderRadius: BorderRadius.circular(100),
           ),
           child: InkWell(
@@ -309,7 +287,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
             },
             child: const Icon(
               Icons.arrow_back_ios_new_rounded,
-              color: Colors.black,
+              color: Colors.white,
             ),
           )),
     );
@@ -320,10 +298,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
       top: 25,
       right: 15,
       child: Container(
-          width: 35,
-          height: 35,
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.orangeAccent,
+            color: Colors.black.withOpacity(0.35),
             borderRadius: BorderRadius.circular(100),
           ),
           child: InkWell(

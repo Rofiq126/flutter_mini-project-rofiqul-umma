@@ -3,6 +3,8 @@ import 'package:my_recipe/model/api/my_recipe_api.dart';
 import 'package:my_recipe/model/my_recipe_detail_model.dart';
 import 'package:my_recipe/model/my_recipe_model.dart';
 
+enum MyRecipeViewState { none, loading, error }
+
 class MyRecipeViewModel extends ChangeNotifier {
   List<Result> _recipes = [];
   List<Result> get recipes => _recipes;
@@ -45,23 +47,49 @@ class MyRecipeViewModel extends ChangeNotifier {
   List<Result> _search = [];
   List<Result> get searchs => _search;
 
-  Future<void> getRecipes() async {
-    var data = await RecipeAPI.getRecipe("30", '');
-    _recipes = data;
+  MyRecipeViewState _states = MyRecipeViewState.none;
+  MyRecipeViewState get state => _states;
+
+  changeState(MyRecipeViewState state) {
+    _states = state;
     notifyListeners();
   }
 
-  Future<void> getRecipeDetail(String id) async {
-    var data = await RecipeApiDetail.getRecipeDetail(id);
-    if (data != null) {
-      _recipeDetail = data;
+  Future<void> getRecipes() async {
+    changeState(MyRecipeViewState.loading);
+    try {
+      var data = await RecipeAPI.getRecipe("30", '');
+      _recipes = data;
       notifyListeners();
+      changeState(MyRecipeViewState.none);
+    } catch (e) {
+      changeState(MyRecipeViewState.error);
+    }
+  }
+
+  Future<void> getRecipeDetail(String id) async {
+    changeState(MyRecipeViewState.loading);
+    try {
+      var data = await RecipeApiDetail.getRecipeDetail(id);
+      if (data != null) {
+        _recipeDetail = data;
+        notifyListeners();
+        changeState(MyRecipeViewState.none);
+      }
+    } catch (e) {
+      changeState(MyRecipeViewState.error);
     }
   }
 
   Future<void> getResultSearch(String name) async {
-    var data = await RecipeAPI.getRecipe("20", name);
-    _search = data;
-    notifyListeners();
+    changeState(MyRecipeViewState.loading);
+    try {
+      var data = await RecipeAPI.getRecipe("20", name);
+      _search = data;
+      notifyListeners();
+      changeState(MyRecipeViewState.none);
+    } catch (e) {
+      changeState(MyRecipeViewState.error);
+    }
   }
 }

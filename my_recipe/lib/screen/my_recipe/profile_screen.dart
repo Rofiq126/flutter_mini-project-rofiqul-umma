@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -163,7 +164,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget cardDataUser(AuthViewModel loginProvider) {
+  Widget cardDataUser(AuthViewModel authViewModel) {
+    final isLoading = authViewModel.states == AuthViewState.loading;
+    final isError = authViewModel.states == AuthViewState.error;
+    if (isLoading) {
+      return Center(
+        child: LoadingFadingLine.circle(
+          borderColor: Colors.orange,
+          size: 40,
+          backgroundColor: Colors.orangeAccent,
+          duration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
     return Center(
       heightFactor: 2.8,
       child: Padding(
@@ -183,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     height: 50,
                   ),
-                  buttonLogout(loginProvider),
+                  buttonLogout(authViewModel),
                 ],
               ),
             )),
@@ -193,32 +211,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget bannerPicture() {
     return Positioned(
-        child: ClipRect(
-            child: banerProfile.isNotEmpty
-                ? Image.file(File(banerProfile),
-                    fit: BoxFit.cover, width: double.infinity, height: 210)
-                : Container(
-                    color: Colors.grey,
-                    width: double.infinity,
-                    height: 210,
-                  )));
+        child: banerProfile.isNotEmpty
+            ? Container(
+                width: double.infinity,
+                height: 210,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.35),
+                          BlendMode.multiply,
+                        ),
+                        image: FileImage(File(banerProfile)),
+                        fit: BoxFit.cover)),
+              )
+            : Container(
+                color: Colors.grey,
+                width: double.infinity,
+                height: 210,
+              ));
   }
 
-  Widget buttonPickImageProfile(AuthViewModel loginProvider) {
+  Widget buttonPickImageProfile(AuthViewModel authViewModel) {
+    final isLoading = authViewModel.states == AuthViewState.loading;
+    final isError = authViewModel.states == AuthViewState.error;
+    if (isLoading) {
+      return Center(
+        child: LoadingFadingLine.circle(
+          borderColor: Colors.orange,
+          size: 40,
+          backgroundColor: Colors.orangeAccent,
+          duration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
     return Positioned(
         top: 255,
         right: 130,
         child: InkWell(
           onTap: () {
-            loginProvider.pickImageProfile().then((_) => initData());
+            authViewModel.pickImageProfile().then((_) => initData());
           },
           child: Container(
-            width: 40,
-            height: 40,
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 3.5),
-                shape: BoxShape.circle,
-                color: Colors.orangeAccent),
+                shape: BoxShape.circle, color: Colors.black.withOpacity(0.35)),
             child: pictureProfile.isNotEmpty
                 ? const Icon(Icons.edit_rounded, color: Colors.white)
                 : const Icon(
@@ -229,19 +270,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-  Widget buttonPickImageBanner(AuthViewModel loginProvider) {
+  Widget buttonPickImageBanner(AuthViewModel authViewModel) {
+    final isLoading = authViewModel.states == AuthViewState.loading;
+    final isError = authViewModel.states == AuthViewState.error;
+    if (isLoading) {
+      return Center(
+        child: LoadingFadingLine.circle(
+          borderColor: Colors.orange,
+          size: 40,
+          backgroundColor: Colors.orangeAccent,
+          duration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
     return Positioned(
         top: 165,
         right: 7,
         child: InkWell(
           onTap: () {
-            loginProvider.pickImageBanner().then((_) => initData());
+            authViewModel.pickImageBanner().then((_) => initData());
           },
           child: Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: Colors.transparent),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, color: Colors.black.withOpacity(0.35)),
             child: banerProfile.isNotEmpty
                 ? const Icon(Icons.edit_rounded, color: Colors.white)
                 : const Icon(
