@@ -42,6 +42,17 @@ class CardRecipe extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.6),
+                offset: const Offset(
+                  0,
+                  10,
+                ),
+                blurRadius: 10,
+                spreadRadius: -6,
+              ),
+            ],
             image: DecorationImage(
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.35),

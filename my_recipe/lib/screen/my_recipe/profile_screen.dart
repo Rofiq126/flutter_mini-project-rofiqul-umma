@@ -59,7 +59,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -88,24 +87,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: SizedBox(
         height: 210,
         width: 210,
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: ClipOval(
-              child: pictureProfile.isNotEmpty
-                  ? Image.file(
-                      File(pictureProfile),
-                      fit: BoxFit.cover,
-                      width: 200,
-                      height: 200,
-                    )
-                  : const SizedBox(
-                      width: 200,
-                      height: 200,
-                      child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/empty_profile.webp')),
-                    )),
-        ),
+        child: ClipOval(
+            child: pictureProfile.isNotEmpty
+                ? Image.file(
+                    File(pictureProfile),
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: 200,
+                  )
+                : const SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/empty_profile.webp')),
+                  )),
       ),
     );
   }
@@ -187,7 +183,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Card(
-            color: Colors.white,
             elevation: 0,
             child: Padding(
               padding: const EdgeInsets.all(16),

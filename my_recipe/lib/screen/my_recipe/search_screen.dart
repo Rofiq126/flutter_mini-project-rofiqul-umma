@@ -78,15 +78,14 @@ class _SearchScreenState extends State<SearchScreen> {
         Navigator.pop(context);
       },
       child: Container(
-        width: 35,
-        height: 35,
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.orangeAccent,
           borderRadius: BorderRadius.circular(100),
         ),
         child: const Icon(
           Icons.arrow_back_ios_new_rounded,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
     );
@@ -118,11 +117,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   color: Colors.redAccent,
                 )),
             focusedBorder: OutlineInputBorder(
-                borderSide:
-                    const BorderSide(color: Colors.orangeAccent, width: 2),
+                borderSide: const BorderSide(
+                  color: Colors.orangeAccent,
+                ),
                 borderRadius: BorderRadius.circular(15)),
             enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.grey, width: 2),
+                borderSide: const BorderSide(
+                  color: Colors.grey,
+                ),
                 borderRadius: BorderRadius.circular(15)),
           ),
         ),

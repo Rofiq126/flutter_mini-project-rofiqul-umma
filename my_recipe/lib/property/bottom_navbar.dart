@@ -43,8 +43,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               title: const Text(
                 'Home',
-                style: TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600),
               )),
           BottomNavyBarItem(
               textAlign: TextAlign.center,
@@ -55,8 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               title: const Text(
                 'Favorites',
-                style: TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600),
               )),
           BottomNavyBarItem(
               textAlign: TextAlign.center,
@@ -67,8 +65,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               title: const Text(
                 'Profile',
-                style: TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600),
               )),
         ]);
   }

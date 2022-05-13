@@ -39,32 +39,31 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      buttonBack(),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      textFavorite(),
-                    ],
-                  ),
+                  buttonBack(),
                   const SizedBox(
-                    height: 10,
+                    width: 15,
                   ),
-                  listFavorites(),
+                  textFavorite(),
                 ],
               ),
-            ),
+              const SizedBox(
+                height: 10,
+              ),
+              listFavorites(),
+            ],
           ),
-        ));
+        ),
+      ),
+    ));
   }
 
   Widget listFavorites() {
@@ -121,8 +120,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     width: 7,
                   ),
                   myRecipeViewModel.idFoods[index].rating!.isNotEmpty
-                      ? Text((myRecipeViewModel.idFoods[index].rating!),
-                          style: const TextStyle(color: Colors.black))
+                      ? Text(
+                          (myRecipeViewModel.idFoods[index].rating!),
+                        )
                       : const Text('error'),
                 ]),
                 trailing: Container(
@@ -168,8 +168,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget textFavorite() {
     return const Text(
       'Favorites',
-      style: TextStyle(
-          color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 22),
+      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 22),
     );
   }
 }
