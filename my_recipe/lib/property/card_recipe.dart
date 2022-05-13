@@ -94,7 +94,7 @@ class CardRecipe extends StatelessWidget {
                           image: foodImage!,
                           rating: (myRecipeViewModel
                                       .recipeDetail.spoonacularScore! /
-                                  2)
+                                  20)
                               .toString()));
                     },
                     child: Container(

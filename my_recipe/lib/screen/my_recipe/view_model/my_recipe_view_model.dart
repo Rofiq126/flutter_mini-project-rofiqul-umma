@@ -118,9 +118,13 @@ class MyRecipeViewModel extends ChangeNotifier {
   Future<void> deleteFavorite(int index) async {
     changeState(MyRecipeViewState.loading);
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove('listGetFavorites');
       _idFoods.removeAt(index);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final listJson = _idFoods.map((value) {
+        return value.toMap();
+      }).toList();
+      final jsonString = jsonEncode(listJson);
+      prefs.setString('listGetFavorites', jsonString);
       notifyListeners();
       changeState(MyRecipeViewState.none);
     } catch (e) {

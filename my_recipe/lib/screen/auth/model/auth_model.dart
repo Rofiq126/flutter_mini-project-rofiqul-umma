@@ -3,11 +3,13 @@ class UserData {
   String? email;
   String? password;
   String? profilePicture;
+  String? bannerPicture;
   UserData({
     this.userName,
     this.email,
     this.password,
     this.profilePicture,
+    this.bannerPicture
   });
 
   Map<String, dynamic> toMap() {
@@ -15,7 +17,8 @@ class UserData {
       'userName': userName,
       'email': email,
       'password': password,
-      'profilePicture': profilePicture
+      'profilePicture': profilePicture,
+      'bannerPicture': bannerPicture,
     };
     return map;
   }
@@ -25,5 +28,6 @@ class UserData {
     email = map['email'];
     password = map['password'];
     profilePicture = map['profilePicture'];
+    bannerPicture = map['bannerPicture'];
   }
 }

@@ -9,11 +9,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum AuthViewState { none, loading, error }
 
 class AuthViewModel extends ChangeNotifier {
-  String userName = '';
-  String email = '';
-  String password = '';
-  String profilePicture = '';
-  String bannerPicture = '';
+  late String userName = '';
+  late String email = '';
+  late String password = '';
+  late String profilePicture = '';
+  late String bannerPicture = '';
 
   AuthViewState _states = AuthViewState.none;
   AuthViewState get states => _states;

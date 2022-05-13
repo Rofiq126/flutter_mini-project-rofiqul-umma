@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/property/bottom_navbar.dart';
 import 'package:my_recipe/screen/my_recipe/home_creen.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,21 @@ class FavoritesScreen extends StatefulWidget {
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
   bool? isAdded;
+  // MyRecipeViewModel? myRecipeViewModel;
+
+  Future<void> getAllFavorites() async {
+    Future.delayed(Duration.zero, () async {
+      var myRecipeViewModel =
+          Provider.of<MyRecipeViewModel>(context, listen: false);
+      await myRecipeViewModel.getListFavorites();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAllFavorites();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +69,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   Widget listFavorites() {
     final myRecipeViewModel = Provider.of<MyRecipeViewModel>(context);
+    final isLoading = myRecipeViewModel.state == MyRecipeViewState.loading;
+    final isError = myRecipeViewModel.state == MyRecipeViewState.error;
+    if (isLoading) {
+      return Center(
+          child: LoadingFadingLine.circle(
+        borderColor: Colors.orange,
+        size: 40,
+        backgroundColor: Colors.orangeAccent,
+        duration: const Duration(milliseconds: 500),
+      ));
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong'),
+      );
+    }
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -68,17 +100,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: myRecipeViewModel
-                                  .idFoods[index].image.isNotEmpty
+                                  .idFoods[index].image!.isNotEmpty
                               ? NetworkImage(
-                                  myRecipeViewModel.idFoods[index].image)
+                                  myRecipeViewModel.idFoods[index].image!)
                               : const NetworkImage(
                                   'https://cdn.dribbble.com/users/310943/screenshots/2792692/empty-state-illustrations.gif'),
                           fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(15)),
                 ),
-                title: myRecipeViewModel.idFoods[index].name.isNotEmpty
+                title: myRecipeViewModel.idFoods[index].name!.isNotEmpty
                     ? Text(
-                        myRecipeViewModel.idFoods[index].name,
+                        myRecipeViewModel.idFoods[index].name!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       )
@@ -88,8 +120,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   const SizedBox(
                     width: 7,
                   ),
-                  myRecipeViewModel.idFoods[index].rating.isNotEmpty
-                      ? Text((myRecipeViewModel.idFoods[index].rating),
+                  myRecipeViewModel.idFoods[index].rating!.isNotEmpty
+                      ? Text((myRecipeViewModel.idFoods[index].rating!),
                           style: const TextStyle(color: Colors.black))
                       : const Text('error'),
                 ]),

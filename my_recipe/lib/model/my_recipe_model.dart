@@ -69,10 +69,10 @@ class Result {
 }
 
 class Favorites {
-  String name = '';
-  String id = '';
-  String image = '';
-  String rating = '';
+  String? name;
+  String? id;
+  String? image;
+  String? rating;
   Favorites({
     required this.name,
     required this.id,
@@ -96,6 +96,7 @@ class Favorites {
     rating = map['rating'];
   }
 }
+
 class ListgetFavorites {
   List<Favorites> listGetFavorites = [];
   Map<String, dynamic> toMap() {
@@ -103,8 +104,8 @@ class ListgetFavorites {
     return map;
   }
 
-  static  List<Favorites> fromList(List<dynamic> map) {
-     return map.map((e) {
+  static List<Favorites> fromList(List<dynamic> map) {
+    return map.map((e) {
       return Favorites.fromMap(e);
     }).toList();
   }

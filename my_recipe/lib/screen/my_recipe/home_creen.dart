@@ -52,12 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void getDataUser() async {
+  Future<void> getDataUser() async {
     loginData = await SharedPreferences.getInstance();
-    setState(() {
-      userName = authProvider!.userName;
-      pictureProfile = authProvider!.profilePicture;
-    });
+    userName = authProvider!.userName;
+    pictureProfile = authProvider!.profilePicture;
   }
 
   @override
