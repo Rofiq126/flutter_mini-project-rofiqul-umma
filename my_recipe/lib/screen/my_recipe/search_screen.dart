@@ -162,6 +162,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => OverViewScreen(
+                            isFavorite: myRecipeViewModel.recipes[index].isFavorite,
                               id: myRecipeViewModel.searchs[index].id
                                   .toString(),
                               nameFood: myRecipeViewModel.searchs[index].title!,

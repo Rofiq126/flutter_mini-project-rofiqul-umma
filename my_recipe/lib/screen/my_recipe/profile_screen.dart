@@ -143,6 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         loginProvider.deleteUser();
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginScreen()));
+        
       },
       style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
@@ -245,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
     return Positioned(
-        top: 255,
+        top: 262,
         right: 130,
         child: InkWell(
           onTap: () {

@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipe/model/my_recipe_model.dart';
-import 'package:my_recipe/screen/my_recipe/favorites_screen.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
+import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CardRecipe extends StatelessWidget {
   final String? foodName;
   final String? foodImage;
   final String foodId;
   final String like;
-
+  final bool isFavorite;
   const CardRecipe({
     Key? key,
     required this.foodName,
     required this.foodImage,
     required this.foodId,
     required this.like,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -28,12 +28,14 @@ class CardRecipe extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => OverViewScreen(
-                      id: foodId,
-                      nameFood: foodName!,
-                      image: foodImage!,
-                    )));
+            PageTransition(
+                type: PageTransitionType.fade,
+                child: OverViewScreen(
+                  isFavorite: isFavorite,
+                  id: foodId,
+                  nameFood: foodName!,
+                  image: foodImage!,
+                )));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -98,7 +100,7 @@ class CardRecipe extends StatelessWidget {
                     ]),
                   ),
                   InkWell(
-                    onTap: () async {
+                    onTap: ()  {
                       myRecipeViewModel.addFavorites(Favorites(
                           name: foodName!,
                           id: foodId,
@@ -115,16 +117,17 @@ class CardRecipe extends StatelessWidget {
                         color: Colors.black.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Row(children: const [
+                      child: Row(children: [
                         Icon(
                           Icons.favorite_rounded,
-                          color: Colors.red,
+                          color: isFavorite ? Colors.red : Colors.white,
                           size: 18,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 7,
                         ),
-                        Text('Favorites', style: TextStyle(color: Colors.white))
+                        const Text('Favorites',
+                            style: TextStyle(color: Colors.white))
                       ]),
                     ),
                   )

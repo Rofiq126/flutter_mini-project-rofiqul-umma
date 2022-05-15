@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/property/card_recipe.dart';
 import 'package:my_recipe/screen/my_recipe/search_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
@@ -77,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
           children: [
             const SizedBox(
-              height: 25,
+              height: 10,
             ),
             cardGreetings(),
             const SizedBox(
@@ -118,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             foodName: recipes.title,
             foodImage: recipes.image,
             foodId: recipes.id.toString(),
+            isFavorite: recipes.isFavorite,
           );
         });
   }
@@ -182,8 +184,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget searchField() {
     return TextFormField(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SearchScreen()));
+        Navigator.push(
+            context,
+            PageTransition(
+                child: const SearchScreen(), type: PageTransitionType.fade));
       },
       readOnly: true,
       decoration: InputDecoration(

@@ -14,17 +14,14 @@ class _SplashScreenState extends State<SplashScreen> {
   late SharedPreferences loginData;
   late bool? newUser;
 
-
   @override
   void initState() {
     super.initState();
-     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       var dataLogin = Provider.of<AuthViewModel>(context, listen: false);
       await dataLogin.checkLogin(context);
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.orangeAccent,
       body: Center(
         child: SizedBox(
-            width: 200,
-            height: 200,
+            width: 220,
+            height: 220,
             child: Image.asset('assets/splash_logo.png')),
       ),
     );

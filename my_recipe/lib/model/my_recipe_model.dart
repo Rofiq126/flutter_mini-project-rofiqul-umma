@@ -52,6 +52,7 @@ class Result {
   String? title;
   String? image;
   String? imageType;
+  bool isFavorite = false;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],

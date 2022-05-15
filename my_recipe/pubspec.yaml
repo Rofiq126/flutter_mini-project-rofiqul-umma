@@ -43,6 +43,7 @@ dependencies:
   flutter_screenutil: ^5.5.2
   flutter_html: ^2.2.1
   loading_animations: ^2.2.0
+  page_transition: ^2.0.5
  
 
 

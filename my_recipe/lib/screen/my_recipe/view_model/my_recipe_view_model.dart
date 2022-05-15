@@ -11,6 +11,7 @@ enum MyRecipeViewState { none, loading, error }
 class MyRecipeViewModel extends ChangeNotifier {
   List<Favorites> _idFoods = [];
   List<Favorites> get idFoods => _idFoods;
+
   List<Result> _recipes = [];
   List<Result> get recipes => _recipes;
 
@@ -64,6 +65,19 @@ class MyRecipeViewModel extends ChangeNotifier {
     changeState(MyRecipeViewState.loading);
     try {
       var data = await RecipeAPI.getRecipe("30", '');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString('listGetFavorites');
+      if (jsonString != null) {
+        final result = jsonDecode(jsonString);
+        _idFoods = ListgetFavorites.fromList(result);
+        for (var element in _idFoods) {
+          for (var i = 0; i < data.length; i++) {
+            if (element.id == data[i].id.toString()) {
+              data[i].isFavorite = true;
+            }
+          }
+        }
+      }
       _recipes = data;
       notifyListeners();
       changeState(MyRecipeViewState.none);
@@ -101,7 +115,17 @@ class MyRecipeViewModel extends ChangeNotifier {
   Future<void> addFavorites(Favorites favorites) async {
     changeState(MyRecipeViewState.loading);
     try {
-      _idFoods.add(favorites);
+      for (var i = 0; i < _recipes.length; i++) {
+        if (int.parse(favorites.id!) == recipes[i].id) {
+          _recipes[i].isFavorite = !_recipes[i].isFavorite;
+          if (_recipes[i].isFavorite) {
+            _idFoods.add(favorites);
+          } else {
+            _idFoods.removeWhere(((item) => item.id == favorites.id));
+          }
+        }
+      }
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final listJson = _idFoods.map((value) {
         return value.toMap();

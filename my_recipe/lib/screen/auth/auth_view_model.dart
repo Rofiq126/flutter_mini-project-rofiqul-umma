@@ -41,11 +41,7 @@ class AuthViewModel extends ChangeNotifier {
     changeState(AuthViewState.loading);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove('userName');
-      prefs.remove('email');
-      prefs.remove('password');
-      prefs.remove('profilePict');
-      prefs.remove('banerPict');
+      prefs.clear();
       notifyListeners();
       changeState(AuthViewState.none);
     } catch (e) {

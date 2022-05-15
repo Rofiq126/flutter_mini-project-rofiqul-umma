@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
+
 import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/loading_screen.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
-import 'package:provider/provider.dart';
 
 class OverViewScreen extends StatefulWidget {
   final String id;
   final String nameFood;
   final String image;
+  final bool isFavorite;
 
   const OverViewScreen({
     Key? key,
     required this.id,
     required this.nameFood,
     required this.image,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -22,6 +25,7 @@ class OverViewScreen extends StatefulWidget {
 }
 
 bool isLoading = true;
+bool? isFavorite;
 
 class _OverViewScreenState extends State<OverViewScreen> {
   Future<void> initDataRecipe() async {
@@ -104,9 +108,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                      color: Colors.black87,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700),
+                      fontSize: 25, fontWeight: FontWeight.w700),
                   textAlign: TextAlign.left,
                 )
               : const Text(
@@ -174,8 +176,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text(
           'Ingrident',
-          style: TextStyle(
-              color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w700),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
         ),
         const SizedBox(
           height: 10,
@@ -253,10 +254,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
             height: 15,
           ),
           const Text('Instruction',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16)),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
           const SizedBox(
             height: 10,
           ),
@@ -265,8 +263,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   data: myRecipeViewModel.recipeDetail.instructions!,
                 )
               : const Text('Error',
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(color: Colors.black, fontSize: 15)),
+                  textAlign: TextAlign.justify, style: TextStyle(fontSize: 15)),
         ],
       ),
     );
@@ -314,7 +311,8 @@ class _OverViewScreenState extends State<OverViewScreen> {
                       (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
                           .toString()));
             },
-            child: const Icon(Icons.favorite_rounded, color: Colors.redAccent),
+            child: Icon(Icons.favorite_rounded,
+                color: widget.isFavorite ? Colors.redAccent : Colors.white),
           )),
     );
   }
