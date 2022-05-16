@@ -50,8 +50,6 @@ class MyRecipeViewModel extends ChangeNotifier {
       spoonacularSourceUrl: '');
   MyRecipeDetail get recipeDetail => _recipeDetail;
 
-
-
   MyRecipeViewState _states = MyRecipeViewState.none;
   MyRecipeViewState get state => _states;
 
@@ -63,7 +61,7 @@ class MyRecipeViewModel extends ChangeNotifier {
   Future<void> getRecipes() async {
     changeState(MyRecipeViewState.loading);
     try {
-      var data = await RecipeAPI.getRecipe("30", '');
+      var data = await RecipeAPI.getRecipe("20", '');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final jsonString = prefs.getString('listGetFavorites');
       if (jsonString != null) {
@@ -102,7 +100,7 @@ class MyRecipeViewModel extends ChangeNotifier {
   Future<void> getResultSearch(String name) async {
     changeState(MyRecipeViewState.loading);
     try {
-      var data = await RecipeAPI.getRecipe("20", name);
+      var data = await RecipeAPI.getRecipe("10", name);
       _recipes = data;
       notifyListeners();
       changeState(MyRecipeViewState.none);

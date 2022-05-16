@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:my_recipe/model/my_recipe_model.dart';
@@ -16,6 +17,9 @@ class AuthViewModel extends ChangeNotifier {
   late String password = '';
   late String profilePicture = '';
   late String bannerPicture = '';
+
+  final List<Favorites> _idFoods = [];
+  List<Favorites> get idFoods => _idFoods;
 
   AuthViewState _states = AuthViewState.none;
   AuthViewState get states => _states;
@@ -43,7 +47,15 @@ class AuthViewModel extends ChangeNotifier {
     changeState(AuthViewState.loading);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      //Delete all data in SharedPreference
       prefs.clear();
+      //Delete all data in _idFoods
+      _idFoods.clear();
+      final listJson = _idFoods.map((value) {
+        return value.toMap();
+      }).toList();
+      final jsonString = jsonEncode(listJson);
+      prefs.setString('listGetFavorites', jsonString);
       notifyListeners();
       changeState(AuthViewState.none);
     } catch (e) {

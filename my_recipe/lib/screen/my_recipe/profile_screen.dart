@@ -63,7 +63,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
           child: Stack(
             alignment: Alignment.topCenter,
             children: [

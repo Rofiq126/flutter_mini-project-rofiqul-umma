@@ -92,7 +92,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     }
     if (isError) {
       return const Center(
-        child: Text('There something wrong'),
+        child: Text('There something wrong :('),
       );
     }
     return ListView.builder(
