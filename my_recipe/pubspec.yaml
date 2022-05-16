@@ -60,7 +60,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   image_path: "assets/icon_app.png"
-  adaptive_icon_background: "#ffffff"
+  adaptive_icon_background: "assets/background_icon.png"
   adaptive_icon_foreground: "assets/foreground_icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
