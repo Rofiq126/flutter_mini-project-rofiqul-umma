@@ -31,6 +31,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     });
   }
 
+  Future<void> rebuildFavorite() async {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (timeStamp) async {
+        var myRecipeViewModel =
+            Provider.of<MyRecipeViewModel>(context, listen: false);
+        await myRecipeViewModel.getRecipes();
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -98,11 +108,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => OverViewScreen(
-                              id: myRecipeViewModel.recipes[index].id
+                          builder: (context) => OverViewScreen(
+                              id: myRecipeViewModel.idFoods[index].id
                                   .toString(),
-                              nameFood: myRecipeViewModel.recipes[index].title!,
-                              image: myRecipeViewModel.recipes[index].image!,
+                              nameFood: myRecipeViewModel.idFoods[index].name!,
+                              image: myRecipeViewModel.idFoods[index].image!,
                               isFavorite: myRecipeViewModel
                                   .recipes[index].isFavorite)));
                 },
@@ -146,7 +156,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         color: Colors.redAccent),
                     child: InkWell(
                       onTap: () {
-                        myRecipeViewModel.deleteFavorite(index);
+                        myRecipeViewModel
+                            .deleteFavorite(index)
+                            .then((_) => rebuildFavorite());
                       },
                       child: const Icon(
                         Icons.delete_forever_rounded,

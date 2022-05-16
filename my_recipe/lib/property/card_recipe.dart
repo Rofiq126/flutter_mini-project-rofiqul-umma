@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-
 import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
@@ -60,8 +59,10 @@ class CardRecipe extends StatelessWidget {
                   Colors.black.withOpacity(0.35),
                   BlendMode.multiply,
                 ),
+                //Succes state
                 image: foodImage != null
                     ? NetworkImage(foodImage!)
+                    //Failed state
                     : const NetworkImage(
                         'https://www.solidbackgrounds.com/images/3840x2160/3840x2160-dark-gray-solid-color-background.jpg'),
                 fit: BoxFit.cover)),
@@ -100,11 +101,11 @@ class CardRecipe extends StatelessWidget {
                     ]),
                   ),
                   InkWell(
-                    onTap: ()  {
+                    onTap: () {
                       myRecipeViewModel.addFavorites(Favorites(
-                          name: foodName!,
+                          name: foodName,
                           id: foodId,
-                          image: foodImage!,
+                          image: foodImage,
                           rating: (myRecipeViewModel
                                       .recipeDetail.spoonacularScore! /
                                   20)

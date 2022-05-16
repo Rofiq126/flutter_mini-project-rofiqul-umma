@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/login_screen.dart';
+import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  AuthViewModel? loginProvider;
+  AuthViewModel? authViewModel;
   @override
   void initState() {
     super.initState();
@@ -30,8 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> initData() async {
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {
-        loginProvider = Provider.of<AuthViewModel>(context, listen: false);
-        await loginProvider!.getDataUser();
+        authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+        await authViewModel!.getDataUser();
         getDataUserLogin();
       },
     );
@@ -40,11 +42,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void getDataUserLogin() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
-      userNameController.text = loginProvider!.userName;
-      emailController.text = loginProvider!.email;
-      passwordController.text = loginProvider!.password;
-      pictureProfile = loginProvider!.profilePicture;
-      banerProfile = loginProvider!.bannerPicture;
+      userNameController.text = authViewModel!.userName;
+      emailController.text = authViewModel!.email;
+      passwordController.text = authViewModel!.password;
+      pictureProfile = authViewModel!.profilePicture;
+      banerProfile = authViewModel!.bannerPicture;
     });
   }
 
@@ -58,22 +60,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
               //Image banner
-              bannerPicture(),
+              bannerPicture(authViewModel),
               //Button pickImageBanner
-              if (loginProvider != null) buttonPickImageBanner(loginProvider!),
+              buttonPickImageBanner(authViewModel),
               //Profile image
-              profilePict(),
+              profilePict(authViewModel),
               //button PickImageProfile
-              if (loginProvider != null) buttonPickImageProfile(loginProvider!),
+              buttonPickImageProfile(authViewModel),
               //Card data user
-              if (loginProvider != null) cardDataUser(loginProvider!),
+              cardDataUser(authViewModel),
             ],
           ),
         ),
@@ -81,13 +85,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget profilePict() {
+  Widget profilePict(AuthViewModel authViewModel) {
+    final isLoading = authViewModel.states == AuthViewState.loading;
+    final isError = authViewModel.states == AuthViewState.error;
+    if (isLoading) {
+      return Center(
+          child: LoadingFadingLine.circle(
+        borderColor: Colors.orange,
+        size: 40,
+        backgroundColor: Colors.orangeAccent,
+        duration: const Duration(milliseconds: 500),
+      ));
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
     return Center(
       heightFactor: 1.9,
       child: SizedBox(
         height: 210,
         width: 210,
         child: ClipOval(
+            //Succes state
             child: pictureProfile.isNotEmpty
                 ? Image.file(
                     File(pictureProfile),
@@ -95,6 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 200,
                     height: 200,
                   )
+                //Failed state
                 : const SizedBox(
                     width: 200,
                     height: 200,
@@ -140,10 +162,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buttonLogout(AuthViewModel loginProvider) {
     return ElevatedButton.icon(
       onPressed: () {
-        loginProvider.deleteUser();
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
-        
+        loginProvider.logout();
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: const LoginScreen(), type: PageTransitionType.fade));
       },
       style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
@@ -205,8 +228,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget bannerPicture() {
+  Widget bannerPicture(AuthViewModel authViewModel) {
+    final isLoading = authViewModel.states == AuthViewState.loading;
+    final isError = authViewModel.states == AuthViewState.error;
+    if (isLoading) {
+      return Center(
+          child: LoadingFadingLine.circle(
+        borderColor: Colors.orange,
+        size: 40,
+        backgroundColor: Colors.orangeAccent,
+        duration: const Duration(milliseconds: 500),
+      ));
+    }
+    if (isError) {
+      return const Center(
+        child: Text('There something wrong :('),
+      );
+    }
     return Positioned(
+        //Succes state
         child: banerProfile.isNotEmpty
             ? Container(
                 width: double.infinity,
@@ -220,6 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         image: FileImage(File(banerProfile)),
                         fit: BoxFit.cover)),
               )
+            //Failed state
             : Container(
                 color: Colors.grey,
                 width: double.infinity,

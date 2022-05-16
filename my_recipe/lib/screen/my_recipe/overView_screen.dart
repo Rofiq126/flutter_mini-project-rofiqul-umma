@@ -10,9 +10,9 @@ class OverViewScreen extends StatefulWidget {
   final String id;
   final String nameFood;
   final String image;
-  final bool isFavorite;
+  bool isFavorite;
 
-  const OverViewScreen({
+  OverViewScreen({
     Key? key,
     required this.id,
     required this.nameFood,
@@ -25,7 +25,6 @@ class OverViewScreen extends StatefulWidget {
 }
 
 bool isLoading = true;
-bool? isFavorite;
 
 class _OverViewScreenState extends State<OverViewScreen> {
   Future<void> initDataRecipe() async {
@@ -38,17 +37,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
     );
   }
 
-  void checkData() {
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     initDataRecipe();
-    checkData();
   }
 
   @override
@@ -125,6 +117,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
   }
 
   Widget foodImage() {
+    //Succes state
     return widget.image.isNotEmpty
         ? ClipRect(
             clipBehavior: Clip.antiAlias,
@@ -134,6 +127,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
               height: 230,
               fit: BoxFit.cover,
             ))
+        //Failed state
         : ClipRect(
             clipBehavior: Clip.antiAlias,
             child: Image.asset(
@@ -159,8 +153,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
           const SizedBox(
             width: 7,
           ),
+          //Failed state
           myRecipeViewModel.recipeDetail.spoonacularScore.toString().isEmpty
               ? const Text(('Error'), style: TextStyle(color: Colors.white))
+              //Succes state
               : Text(
                   (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
                       .toString(),
@@ -181,6 +177,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
         const SizedBox(
           height: 10,
         ),
+        //Succes state
         myRecipeViewModel.recipeDetail.extendedIngredients.isNotEmpty
             ? ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -218,6 +215,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   );
                 },
               )
+            //Failed state
             : Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
@@ -258,10 +256,12 @@ class _OverViewScreenState extends State<OverViewScreen> {
           const SizedBox(
             height: 10,
           ),
+          //Succes state
           myRecipeViewModel.recipeDetail.instructions != null
               ? Html(
                   data: myRecipeViewModel.recipeDetail.instructions!,
                 )
+              //Failed state
               : const Text('Error',
                   textAlign: TextAlign.justify, style: TextStyle(fontSize: 15)),
         ],
@@ -310,6 +310,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   rating:
                       (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
                           .toString()));
+              widget.isFavorite = !widget.isFavorite;
             },
             child: Icon(Icons.favorite_rounded,
                 color: widget.isFavorite ? Colors.redAccent : Colors.white),

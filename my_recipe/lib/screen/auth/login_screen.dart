@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/model/auth_model.dart';
 import 'package:my_recipe/property/bottom_navbar.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -169,14 +170,16 @@ class _LoginScreenState extends State<LoginScreen> {
               formKey.currentState!.save();
               final authProvider =
                   Provider.of<AuthViewModel>(context, listen: false);
-              authProvider.addUser(UserData(
+              authProvider.login(UserData(
                 userName: usernameController.text,
                 email: emailController.text,
                 password: passwordController.text,
               ));
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const BottomNavBar()),
+                  PageTransition(
+                      child: const BottomNavBar(),
+                      type: PageTransitionType.fade),
                   ((route) => false));
             },
             style: ButtonStyle(

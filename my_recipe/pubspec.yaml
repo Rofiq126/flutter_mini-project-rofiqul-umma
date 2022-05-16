@@ -45,6 +45,7 @@ dependencies:
   loading_animations: ^2.2.0
   page_transition: ^2.0.5
  
+ 
 
 
 dev_dependencies:

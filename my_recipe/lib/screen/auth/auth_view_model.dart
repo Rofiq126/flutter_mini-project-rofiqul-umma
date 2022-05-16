@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/auth/login_screen.dart';
 import 'package:my_recipe/screen/auth/model/auth_model.dart';
 import 'package:my_recipe/property/bottom_navbar.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AuthViewState { none, loading, error }
@@ -23,7 +25,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addUser(UserData userLogin) async {
+  Future<void> login(UserData userLogin) async {
     changeState(AuthViewState.loading);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,7 +39,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  void deleteUser() async {
+  Future<void> logout() async {
     changeState(AuthViewState.loading);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,13 +59,19 @@ class AuthViewModel extends ChangeNotifier {
           prefs.getString('email') != null) {
         Timer(
             const Duration(seconds: 1),
-            () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const BottomNavBar())));
+            () => Navigator.pushReplacement(
+                context,
+                PageTransition(
+                    child: const BottomNavBar(),
+                    type: PageTransitionType.fade)));
       } else {
         Timer(
-            const Duration(seconds: 3),
-            () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LoginScreen())));
+            const Duration(seconds: 1),
+            () => Navigator.pushReplacement(
+                context,
+                PageTransition(
+                    child: const LoginScreen(),
+                    type: PageTransitionType.fade)));
       }
       notifyListeners();
       changeState(AuthViewState.none);
