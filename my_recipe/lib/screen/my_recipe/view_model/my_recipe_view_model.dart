@@ -50,8 +50,7 @@ class MyRecipeViewModel extends ChangeNotifier {
       spoonacularSourceUrl: '');
   MyRecipeDetail get recipeDetail => _recipeDetail;
 
-  List<Result> _search = [];
-  List<Result> get searchs => _search;
+
 
   MyRecipeViewState _states = MyRecipeViewState.none;
   MyRecipeViewState get state => _states;
@@ -104,7 +103,7 @@ class MyRecipeViewModel extends ChangeNotifier {
     changeState(MyRecipeViewState.loading);
     try {
       var data = await RecipeAPI.getRecipe("20", name);
-      _search = data;
+      _recipes = data;
       notifyListeners();
       changeState(MyRecipeViewState.none);
     } catch (e) {

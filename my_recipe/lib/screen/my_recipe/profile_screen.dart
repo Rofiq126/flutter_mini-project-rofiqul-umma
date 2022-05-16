@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/screen/auth/auth_view_model.dart';
 import 'package:my_recipe/screen/auth/login_screen.dart';
-import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

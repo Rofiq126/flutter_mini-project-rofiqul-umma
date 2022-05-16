@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:my_recipe/property/bottom_navbar.dart';
 import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +76,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget buttonBack() {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const BottomNavBar()));
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -153,7 +155,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: myRecipeViewModel.searchs.length,
+        itemCount: myRecipeViewModel.recipes.length,
         itemBuilder: (context, index) {
           return ListTile(
             title: InkWell(
@@ -162,20 +164,21 @@ class _SearchScreenState extends State<SearchScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => OverViewScreen(
-                            isFavorite: myRecipeViewModel.recipes[index].isFavorite,
-                              id: myRecipeViewModel.searchs[index].id
+                              isFavorite:
+                                  myRecipeViewModel.recipes[index].isFavorite,
+                              id: myRecipeViewModel.recipes[index].id
                                   .toString(),
-                              nameFood: myRecipeViewModel.searchs[index].title!,
-                              image: myRecipeViewModel.searchs[index].image!)));
+                              nameFood: myRecipeViewModel.recipes[index].title!,
+                              image: myRecipeViewModel.recipes[index].image!)));
                 },
-                child: Text(myRecipeViewModel.searchs[index].title ?? '')),
+                child: Text(myRecipeViewModel.recipes[index].title ?? '')),
             leading: Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image:
-                          NetworkImage(myRecipeViewModel.searchs[index].image!),
+                          NetworkImage(myRecipeViewModel.recipes[index].image!),
                       fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(100)),
             ),

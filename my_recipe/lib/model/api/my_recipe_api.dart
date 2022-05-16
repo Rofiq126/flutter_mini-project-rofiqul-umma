@@ -8,7 +8,7 @@ class RecipeAPI {
   static Future<List<Result>> getRecipe(String limitNumber, String name) async {
     var uri = Uri.https('api.spoonacular.com', '/recipes/complexSearch', {
       "number": limitNumber,
-      "apiKey": "c315c717ed1a4f0bbb5303363bac6651",
+      "apiKey": "22cf03555fae4b3f8c009c17a844d043",
       "query": name
     });
 
@@ -41,7 +41,7 @@ class RecipeAPI {
 class RecipeApiDetail {
   static Future<dynamic> getRecipeDetail(String id) async {
     var uri = Uri.https('api.spoonacular.com', '/recipes/$id/information',
-        {"apiKey": "c315c717ed1a4f0bbb5303363bac6651"});
+        {"apiKey": "22cf03555fae4b3f8c009c17a844d043"});
 
     final response = await Dio().getUri(uri,
         options: Options(headers: {
