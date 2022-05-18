@@ -80,7 +80,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             foodName(),
-            rating(myRecipeViewModel),
+            likes(myRecipeViewModel),
           ],
         ),
         listIngrident(myRecipeViewModel),
@@ -137,7 +137,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
             ));
   }
 
-  Widget rating(MyRecipeViewModel myRecipeViewModel) {
+  Widget likes(MyRecipeViewModel myRecipeViewModel) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Container(
