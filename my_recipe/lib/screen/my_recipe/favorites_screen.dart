@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:my_recipe/property/bottom_navbar.dart';
-import 'package:my_recipe/screen/my_recipe/home_creen.dart';
 import 'package:my_recipe/screen/my_recipe/overview_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 
@@ -139,7 +137,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         )
                       : const Text('error'),
                   subtitle: Row(children: [
-                    const Icon(Icons.star, color: Colors.yellow, size: 18),
+                    const Icon(Icons.thumb_up_rounded,
+                        color: Colors.yellow, size: 18),
                     const SizedBox(
                       width: 7,
                     ),

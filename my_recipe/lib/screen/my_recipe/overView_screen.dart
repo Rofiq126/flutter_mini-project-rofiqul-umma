@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:my_recipe/screen/my_recipe/loading_screen.dart';
 import 'package:provider/provider.dart';
-
 import 'package:my_recipe/model/my_recipe_model.dart';
-import 'package:my_recipe/screen/loading_screen.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
 
 class OverViewScreen extends StatefulWidget {
@@ -149,17 +148,15 @@ class _OverViewScreenState extends State<OverViewScreen> {
           borderRadius: BorderRadius.circular(15),
         ),
         child: Row(children: [
-          const Icon(Icons.star, color: Colors.yellow, size: 18),
+          const Icon(Icons.thumb_up_rounded, color: Colors.yellow, size: 18),
           const SizedBox(
             width: 7,
           ),
           //Failed state
-          myRecipeViewModel.recipeDetail.spoonacularScore.toString().isEmpty
+          myRecipeViewModel.recipeDetail.aggregateLikes.toString().isEmpty
               ? const Text(('Error'), style: TextStyle(color: Colors.white))
               //Succes state
-              : Text(
-                  (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
-                      .toString(),
+              : Text(myRecipeViewModel.recipeDetail.aggregateLikes.toString(),
                   style: const TextStyle(color: Colors.white))
         ]),
       ),
@@ -202,13 +199,20 @@ class _OverViewScreenState extends State<OverViewScreen> {
                           width: 16.0,
                         ),
                         Expanded(
-                          child: Text(
-                              myRecipeViewModel.recipeDetail
-                                  .extendedIngredients[index].original!,
-                              maxLines: 10,
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w600)),
+                          child: myRecipeViewModel
+                                      .recipeDetail
+                                      .extendedIngredients[index]
+                                      .originalName !=
+                                  null
+                              ? Text(
+                                  myRecipeViewModel.recipeDetail
+                                      .extendedIngredients[index].original!,
+                                  maxLines: 10,
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600))
+                              : const Text('error'),
                         )
                       ],
                     ),
@@ -259,7 +263,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
           //Succes state
           myRecipeViewModel.recipeDetail.instructions != null
               ? Html(
-                  data: myRecipeViewModel.recipeDetail.instructions!,
+                  data: myRecipeViewModel.recipeDetail.instructions,
                 )
               //Failed state
               : const Text('Error',
@@ -307,9 +311,9 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   name: widget.nameFood,
                   id: widget.id,
                   image: widget.image,
-                  rating:
-                      (myRecipeViewModel.recipeDetail.spoonacularScore! / 20)
-                          .toString()));
+                  rating: myRecipeViewModel.recipeDetail.aggregateLikes
+                      .toString()
+                      .toString()));
               widget.isFavorite = !widget.isFavorite;
             },
             child: Icon(Icons.favorite_rounded,

@@ -60,6 +60,7 @@ class RecipeApiDetail {
         response.statusCode == 202 ||
         response.statusCode == 203) {
       debugPrint('Success Fetching Data');
+      print(data);
       return MyRecipeDetail.fromJson(data);
     }
 
