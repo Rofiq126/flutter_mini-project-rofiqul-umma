@@ -14,11 +14,6 @@ class RecipeAPI {
 
     final response = await Dio().getUri(uri,
         options: Options(headers: {
-          "access-control-allow-credentials": "true",
-          "access-control-allow-headers": "ver",
-          "access-control-allow-methods": "GET, POST",
-          "access-control-allow-origin": "*",
-          "connection": "keep-alive",
           "Content-Type": "application/json",
         }));
 
@@ -45,11 +40,6 @@ class RecipeApiDetail {
 
     final response = await Dio().getUri(uri,
         options: Options(headers: {
-          "access-control-allow-credentials": "true",
-          "access-control-allow-headers": "ver",
-          "access-control-allow-methods": "GET, POST",
-          "access-control-allow-origin": "*",
-          "connection": "keep-alive",
           "Content-Type": "application/json",
         }));
     var jsonString = jsonEncode(response.data);
