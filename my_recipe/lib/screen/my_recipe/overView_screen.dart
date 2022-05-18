@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:my_recipe/screen/my_recipe/loading_screen.dart';
+import 'package:my_recipe/property/loading_screen.dart';
+
 import 'package:provider/provider.dart';
 import 'package:my_recipe/model/my_recipe_model.dart';
 import 'package:my_recipe/screen/my_recipe/view_model/my_recipe_view_model.dart';
